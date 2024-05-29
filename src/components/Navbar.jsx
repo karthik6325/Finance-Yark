@@ -27,10 +27,10 @@ const Navbar = () => {
           <Link to="/services">Services</Link>
         </li>
         <li className='p-4 font-bold'>
-          <Link to="/services">Tools</Link>
+          <Link to="/tools">Tools</Link>
         </li>
         <li className='p-4 font-bold'>
-          <Link to="/tools">Blogs</Link>
+          <Link to="/blogs">Blogs</Link>
         </li>
         <li className='p-4 font-bold mr-10'>
           <Link to="/contact">Contact</Link>

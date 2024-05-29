@@ -1,17 +1,12 @@
 import React from 'react';
-import Analytics from '../components/Analytics';
-import Cards from '../components/Cards';
 import Footer from '../components/Footer';
-import Hero from '../components/Hero';
-import Planning from '../components/Planning';
+import Form from '../components/pageComponents/contactPage/form';
+
 
 function Contact() {
   return (
     <div>
-      <Hero />
-      <Analytics />
-      <Planning />
-      <Cards />
+      <Form/>
       <Footer />
     </div>
   );
