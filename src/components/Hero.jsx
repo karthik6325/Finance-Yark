@@ -24,8 +24,8 @@ const Hero = () => {
             Every smart investor deserves to work with smart tools.
           </p>
         </div>
-        <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium my-6 mx-auto py-3 text-black before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 text-white shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
-          <span relative="relative z-10">Get Started</span>
+        <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium my-6 mx-auto py-3 text-black before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 text-black shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
+          <span relative="relative z-10 text-black">Get Started</span>
         </button>
       </div>
     </div>
