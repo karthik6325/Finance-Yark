@@ -1,11 +1,11 @@
 import React from 'react';
 import Footer from '../components/Footer';
-import Hero from '../components/Hero';
+import ToolsList from '../components/pageComponents/toolsPage/toolsList';
 
 function Tools() {
   return (
     <div>
-      <Hero />
+      <ToolsList />
       <Footer />
     </div>
   );

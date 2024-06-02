@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Invest from '../../../assets/undraw_Invest_re_8jl5.png'; // Make sure the path to your image is correct
+import Invest from '../../../assets/undraw_Invest_re_8jl5.png'; 
 
 const Aproach = () => {
   useEffect(() => {
@@ -24,16 +24,12 @@ const Aproach = () => {
               Whether you're planning for retirement, saving for your child's education, or managing debt, 
               we've got you covered.
             </p>
-          </div>
-          <div data-aos="fade-up" data-aos-delay="200">
             <h1 className='md:text-4xl sm:text-3xl text-2xl font-bold py-2'>Holistic Planning</h1>
             <p>
               YARK takes a holistic approach to financial planning. We consider all aspects of your financial life, 
               from investments and insurance to estate planning and tax optimization. Our goal is to create a 
               comprehensive roadmap that aligns with your dreams and aspirations.
             </p>
-          </div>
-          <div data-aos="fade-up" data-aos-delay="300">
             <h1 className='md:text-4xl sm:text-3xl text-2xl font-bold py-2'>Education and Empowerment</h1>
             <p>
               We don't just manage your finances; we educate and empower you along the way. Our workshops, 

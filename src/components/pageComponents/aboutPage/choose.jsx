@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import Invest from '../../../assets/undraw_Invest_re_8jl5.png'; // Make sure the path to your image is correct
+import Invest from '../../../assets/undraw_Invest_re_8jl5.png'; 
 
 const Choose = () => {
   useEffect(() => {
@@ -21,15 +21,11 @@ const Choose = () => {
               With over a decade of experience, our team has navigated various market cycles and economic shifts. 
               We bring this wisdom to your financial journey.
             </p>
-          </div>
-          <div data-aos="fade-up" data-aos-delay="300">
             <h1 className='md:text-4xl sm:text-3xl text-2xl font-bold py-2'>Transparency</h1>
             <p>
               At YARK, transparency is non-negotiable. You'll always know where your money 
               is invested and how it's working for you.
             </p>
-          </div>
-          <div data-aos="fade-up" data-aos-delay="400">
             <h1 className='md:text-4xl sm:text-3xl text-2xl font-bold py-2'>Results-Driven</h1>
             <p>
               Our success is measured by your success. We celebrate your milestones and work 
