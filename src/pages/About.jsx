@@ -4,10 +4,12 @@ import BackgroundImage from '../assets/undraw_Finance_re_gnv2.png';
 import SideHero from '../components/SideHero';
 import Aproach from '../components/pageComponents/aboutPage/approach';
 import Choose from '../components/pageComponents/aboutPage/choose';
+import Navbar from '../components/Navbar';
 
 function About() {
   return (
     <div>
+      <Navbar/>
       <SideHero
         title="About Yark Financial Planners"
         content="At YARK, we believe that financial independence is not just a goal, it's a journey. 
