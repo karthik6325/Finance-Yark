@@ -3,6 +3,9 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useLogin } from '../context/loginContext';
+const host="http://localhost:3001";
+// http://localhost:3001
+// https://yark-backend.onrender.com
 
 const Login = () => {
     const { setLoginUser } = useLogin();
@@ -23,12 +26,12 @@ const Login = () => {
     const login = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('https://yark-backend.onrender.com/api/v1/login', user);
+            const response = await axios.post(`${host}/api/v1/login`, user);
             const token = response.data.token;
             document.cookie = `token=${token}; Path=/; HttpOnly; Secure; SameSite=Strict`;
             setLoginUser(response.data.token);
             // console.log(response.data.token);
-            history("/tools");
+            history("/details");
         } catch (error) {
             toast.error("Invalid email id or password!");
             console.error(error);

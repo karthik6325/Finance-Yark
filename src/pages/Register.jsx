@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+const host="http://localhost:3001";
+// http://localhost:3001
+// https://yark-backend.onrender.com
 
 const Register = () => {
     const history = useNavigate();
@@ -31,23 +34,44 @@ const Register = () => {
     const handleVerifyEmail = async () => {
         try {
             const { email } = user;
-            const response = await axios.post('https://yark-backend.onrender.com/api/v1/send', { email });
+            const response = await axios.post(`${host}/api/v1/send`, { email });
             if (response.status === 200) {
                 toast.success("OTP sent to your email!");
                 setUser({ ...user, otpSent: true });
-            } else {
+            } 
+            else if (response.status === 201){
+                setUser({ ...user, otpSent: true, otpVerified: true });
+            }
+            else {
                 toast.error("Failed to send OTP!");
             }
         } catch (error) {
-            console.error("Error sending OTP:", error);
-            toast.error("Failed to send OTP!");
+            if(error.response.status === 400) toast.error("User already registered!");
+            else toast.error("Failed to send OTP!");
         }
     };
+
+    
+    // const checkVerify = async () => {
+    //     try {
+    //         const { email } = user;
+    //         const response = await axios.post(`${host}/api/v1/check`, { email });
+    //         if (response.status === 200) {
+    //             setUser({ ...user, otpVerified: true });
+    //         } 
+    //     } catch (error) {
+    //     }
+    // }
+    
+    // useEffect(()=>{
+    //     checkVerify();
+    //     console.log("hello");
+    // });
 
     const handleVerifyOtp = async () => {
         try {
             const { email, otp } = user;
-            const response = await axios.post('https://yark-backend.onrender.com/api/v1/verify', { email, otp });
+            const response = await axios.post(`${host}/api/v1/verify`, { email, otp });
             if (response.status === 200) {
                 toast.success("OTP verified!");
                 setUser({ ...user, otpVerified: true });
@@ -62,9 +86,10 @@ const Register = () => {
 
     const register = async () => {
         try {
+            console.log(user)
             const { name, email, password, reEnterPassword, dob, location, phoneNumber, username } = user;
             if (name && email && password && (password === reEnterPassword) && dob && location && phoneNumber && username) {
-                const response = await axios.post('https://yark-backend.onrender.com/api/v1/register', user);
+                const response = await axios.post(`${host}/api/v1/register`, user);
                 if (response.status === 201) {
                     history('/login');
                     toast.success("Registered successfully!");
