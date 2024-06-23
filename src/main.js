@@ -12,7 +12,6 @@ import Details from './pages/Details';
 import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import ProfileDashboard from './pages/DashboardProfile';
-import { useLogin } from './context/loginContext';
 import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
 
 const Main = () => {
@@ -36,7 +35,7 @@ const Main = () => {
             </ProtectedRoute>
           }>
             <Route index element={<Dashboard />} />
-            <Route path="products" element={<ProfileDashboard />} />
+            <Route path="profile" element={<ProfileDashboard />} />
           </Route>
         </Routes>
       </Router>

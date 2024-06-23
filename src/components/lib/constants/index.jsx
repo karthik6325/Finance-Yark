@@ -17,15 +17,15 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		icon: <HiOutlineViewGrid />
 	},
 	{
-		key: 'products',
-		label: 'Products',
-		path: '/dashboard/products',
+		key: 'profile',
+		label: 'Profile',
+		path: '/dashboard/profile',
 		icon: <HiOutlineCube />
 	},
 	{
-		key: 'orders',
-		label: 'Orders',
-		path: '/orders',
+		key: 'invetments',
+		label: 'Invetments',
+		path: '/investments',
 		icon: <HiOutlineShoppingCart />
 	},
 	{

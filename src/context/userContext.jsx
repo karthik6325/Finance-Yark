@@ -1,35 +1,42 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import axios from 'axios';
+import { useLogin } from './loginContext';
 
 // Create a context for user data
 const UserContext = createContext();
-const host="http://localhost:3001";
-// http://localhost:3001
-// https://yark-backend.onrender.com
+const host = "http://localhost:3001";
 
 const UserProvider = ({ children }) => {
+  const { userToken } = useLogin();
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : {};
   });
 
-  const fetchUserData = async () => {
-    try {
-      const response = await axios.get(`${host}/api/v1/register`); // Adjust the endpoint as needed
-      setUser(response.data);
-    } catch (err) {
-    } 
-  };
-
+  // Define fetchUserData inside useEffect to resolve the warning
   useEffect(() => {
-    fetchUserData();
-  }, []);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get(`${host}/api/v1/getdetails`, {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          }
+        });
+        setUser(response.data);
+        console.log("User data fetched:", response.data);
+      } catch (err) {
+        console.error("Error fetching user data:", err);
+      }
+    };
+
+    fetchUserData(); 
+  }, [userToken]); 
 
   const updateUser = async (updatedUser) => {
     try {
-      const response = await axios.put('/api/user', updatedUser); // Adjust the endpoint as needed
-      setUser(response.data);
+      setUser(updatedUser);
     } catch (err) {
+      console.error("Error updating user:", err);
     }
   };
 

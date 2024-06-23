@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useLogin } from '../../../context/loginContext';
+import { useUser } from  '../../../context/userContext'
 
 const host="http://localhost:3001";
 // http://localhost:3001
@@ -10,16 +12,16 @@ const host="http://localhost:3001";
 const UserDetails = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
+  const { userToken } = useLogin();
+  const { updateUser } = useUser();
   const [userDetails, setUserDetails] = useState({
     maritalStatus: '',
-    kids: [],
+    children: [],
     parents: {
       fatherName: '',
       fatherDOB: '',
-      fatherGender: '',
       motherName: '',
       motherDOB: '',
-      motherGender: '',
     },
     siblings: [],
   });
@@ -45,27 +47,27 @@ const UserDetails = () => {
     setUserDetails(updatedUserDetails);
   };
 
-  const handleKidsChange = (index, e) => {
+  const handlechildrenChange = (index, e) => {
     const { name, value } = e.target;
-    const updatedKids = userDetails.kids.map((kid, i) => (i === index ? { ...kid, [name]: value } : kid));
+    const updatedchildren = userDetails.children.map((kid, i) => (i === index ? { ...kid, [name]: value } : kid));
     setUserDetails({
       ...userDetails,
-      kids: updatedKids,
+      children: updatedchildren,
     });
   };
 
   const handleAddKid = () => {
     setUserDetails({
       ...userDetails,
-      kids: [...userDetails.kids, { name: '', dob: '', gender: '' }],
+      children: [...userDetails.children, { name: '', dob: '', gender: '' }],
     });
   };
 
   const handleRemoveKid = (index) => {
-    const updatedKids = userDetails.kids.filter((_, i) => i !== index);
+    const updatedchildren = userDetails.children.filter((_, i) => i !== index);
     setUserDetails({
       ...userDetails,
-      kids: updatedKids,
+      children: updatedchildren,
     });
   };
 
@@ -112,9 +114,15 @@ const UserDetails = () => {
   const submitData = async () => {
     console.log(userDetails);
     try {
-      const response = await axios.post(`${host}/api/v1/user`, userDetails);
+      const response = await axios.post(`${host}/api/v1/user`, userDetails,
+          {headers: {
+            Authorization: `Bearer ${userToken}`,
+          }
+        }
+      );
+      updateUser(userDetails)
       console.log(response.data);  // Optional: Handle response from the server
-      navigate('/user', { state: userDetails }); // Navigate after successful submission
+      navigate('/dashboard'); // Navigate after successful submission
     } catch (error) {
       console.error('Error submitting data:', error);
       toast.error('Failed to submit data. Please try again later.');
@@ -125,7 +133,7 @@ const UserDetails = () => {
     if (currentPage === 1) {
       return userDetails.maritalStatus !== '';
     } else if (currentPage === 2) {
-      return userDetails.kids.every((kid) => kid.name !== '' && kid.dob !== '' && kid.gender !== '');
+      return userDetails.children.every((kid) => kid.name !== '' && kid.dob !== '' && kid.gender !== '');
     } else if (currentPage === 3) {
       const { fatherName, fatherDOB, fatherGender, motherName, motherDOB, motherGender } = userDetails.parents;
       return fatherName !== '' && fatherDOB !== '' && fatherGender !== '' && motherName !== '' && motherDOB !== '' && motherGender !== '';
@@ -148,9 +156,9 @@ const UserDetails = () => {
               <select name="maritalStatus" value={userDetails.maritalStatus} className="w-full py-2 px-4 border rounded" onChange={handleChange}>
                 <option value="">Select</option>
                 <option value="single">Single</option>
-                <option value="single_with_kids">Single with Kids</option>
+                <option value="single_with_children">Single with children</option>
                 <option value="married">Married</option>
-                <option value="married_with_kids">Married with Kids</option>
+                <option value="married_with_children">Married with children</option>
               </select>
             </form>
             <div className="btn-container flex justify-end mt-4">
@@ -161,25 +169,25 @@ const UserDetails = () => {
           </div>
         );
       case 2:
-        if (userDetails.maritalStatus.includes('kids') || userDetails.maritalStatus === '') {
+        if (userDetails.maritalStatus.includes('children') || userDetails.maritalStatus === '') {
           return (
             <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
-              <h1 className="text-center text-2xl font-bold mb-4">Kids Details</h1>
+              <h1 className="text-center text-2xl font-bold mb-4">children Details</h1>
               <form>
-                {userDetails.kids.map((kid, index) => (
+                {userDetails.children.map((kid, index) => (
                   <div key={index} className="mb-4">
                     <label className="block mb-2">
                       Kid Name <span className="text-red-500">*</span>
                     </label>
-                    <input type="text" name="name" value={kid.name} onChange={(e) => handleKidsChange(index, e)} className="w-full py-2 px-4 border rounded" />
+                    <input type="text" name="name" value={kid.name} onChange={(e) => handlechildrenChange(index, e)} className="w-full py-2 px-4 border rounded" />
                     <label className="block mb-2">
                       Kid DOB <span className="text-red-500">*</span>
                     </label>
-                    <input type="date" name="dob" value={kid.dob} onChange={(e) => handleKidsChange(index, e)} className="w-full py-2 px-4 border rounded" />
+                    <input type="date" name="dob" value={kid.dob} onChange={(e) => handlechildrenChange(index, e)} className="w-full py-2 px-4 border rounded" />
                     <label className="block mb-2">
                       Kid Gender <span className="text-red-500">*</span>
                     </label>
-                    <select name="gender" value={kid.gender} onChange={(e) => handleKidsChange(index, e)} className="w-full py-2 px-4 border rounded">
+                    <select name="gender" value={kid.gender} onChange={(e) => handlechildrenChange(index, e)} className="w-full py-2 px-4 border rounded">
                       <option value="">Select</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
@@ -221,15 +229,6 @@ const UserDetails = () => {
                 Father's DOB <span className="text-red-500">*</span>
               </label>
               <input type="date" name="parents.fatherDOB" value={userDetails.parents.fatherDOB} onChange={handleChange} className="w-full py-2 px-4 border rounded" />
-              <label className="block mb-2">
-                Father's Gender <span className="text-red-500">*</span>
-              </label>
-              <select name="parents.fatherGender" value={userDetails.parents.fatherGender} onChange={handleChange} className="w-full py-2 px-4 border rounded">
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
               <label className="block mt-4 mb-2">
                 Mother's Name <span className="text-red-500">*</span>
               </label>
@@ -238,15 +237,6 @@ const UserDetails = () => {
                 Mother's DOB <span className="text-red-500">*</span>
               </label>
               <input type="date" name="parents.motherDOB" value={userDetails.parents.motherDOB} onChange={handleChange} className="w-full py-2 px-4 border rounded" />
-              <label className="block mb-2">
-                Mother's Gender <span className="text-red-500">*</span>
-              </label>
-              <select name="parents.motherGender" value={userDetails.parents.motherGender} onChange={handleChange} className="w-full py-2 px-4 border rounded">
-                <option value="">Select</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
             </form>
             <div className="btn-container flex justify-between mt-4">
               <button type="button" onClick={prevPage} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">

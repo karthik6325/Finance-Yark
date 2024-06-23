@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -86,7 +86,6 @@ const Register = () => {
 
     const register = async () => {
         try {
-            console.log(user)
             const { name, email, password, reEnterPassword, dob, location, phoneNumber, username } = user;
             if (name && email && password && (password === reEnterPassword) && dob && location && phoneNumber && username) {
                 const response = await axios.post(`${host}/api/v1/register`, user);
