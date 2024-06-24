@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useLogin } from '../context/loginContext';
-const host="http://localhost:3001";
+const host="https://yark-backend.onrender.com";
 // http://localhost:3001
 // https://yark-backend.onrender.com
 

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useLogin } from '../../../context/loginContext';
 import { useUser } from  '../../../context/userContext'
 
-const host="http://localhost:3001";
+const host="https://yark-backend.onrender.com";
 // http://localhost:3001
 // https://yark-backend.onrender.com
 
