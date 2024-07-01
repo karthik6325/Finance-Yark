@@ -33,29 +33,32 @@ const ToolsList = () => {
           </button>
           <button 
             className="m-2 px-4 py-2 bg-blue-500 text-white rounded" 
-            onClick={() => handleButtonClick('Other Calculator 2')}
+            onClick={() => handleButtonClick('Compound Interest Calculator')}
           >
-            Other Calculator 2
+            Compound Interest Calculator
           </button>
           <button 
             className="m-2 px-4 py-2 bg-blue-500 text-white rounded" 
-            onClick={() => handleButtonClick('Other Calculator 3')}
+            onClick={() => handleButtonClick('Marriage Calculator')}
           >
-            Other Calculator 3
+            Marriage Calculator 
           </button>
           <button 
             className="m-2 px-4 py-2 bg-blue-500 text-white rounded" 
-            onClick={() => handleButtonClick('Other Calculator 4')}
+            onClick={() => handleButtonClick('SIP Calculator')}
           >
-            Other Calculator 4
+            SIP Calculator
           </button>
         </div>
       </section>
       <section id="finance-calculator" className="mt-10" style={{ height: '1000px' }}>
         <div className="flex justify-center items-center h-full bg-white rounded shadow">
           {activeCalculator === 'FIRE Calculator' ? <FinanceCalculator /> : 
-          activeCalculator === 'Education Calculator'?<CompoundInterestCalculator/>:
-          activeCalculator === 'SIP Calculator'? <SIPCalculator/> : <p>Select a calculator to load</p>
+          activeCalculator === 'Education Calculator' ?<EducationPlanningCalculator/> :
+          activeCalculator === 'SIP Calculator' ? <SIPCalculator/> : 
+          activeCalculator === 'Marriage Calculator' ? <MarriageCalculator/> :
+          activeCalculator === 'Compound Interest Calculator' ? <CompoundInterestCalculator/> :
+          <p>Select a calculator to load</p>
           }
         </div>
       </section>

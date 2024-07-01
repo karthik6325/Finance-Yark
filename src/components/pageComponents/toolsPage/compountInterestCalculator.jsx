@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import Finance from 'financejs';
-
-const finance = new Finance();
 
 const CompoundInterestCalculator = () => {
   const [investmentAmount, setInvestmentAmount] = useState(10000);
@@ -24,7 +21,6 @@ const CompoundInterestCalculator = () => {
     }
 
     const r = rateOfReturn / 100;
-    const t = investmentDuration;
     const P = investmentAmount;
 
     let A = 0;

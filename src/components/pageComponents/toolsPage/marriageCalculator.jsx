@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import Finance from 'financejs';
-
-const finance = new Finance();
 
 const MarriageCalculator = () => {
   const [currentAge, setCurrentAge] = useState(5);
