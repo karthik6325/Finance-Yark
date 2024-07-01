@@ -33,7 +33,7 @@ const UserProvider = ({ children }) => {
     };
 
     if(userToken !== '') fetchUserData(); 
-  }, [userToken]); 
+  }, [userToken, setLoginUser]); 
 
   const updateUser = async (updatedUser) => {
     try {
