@@ -4,7 +4,7 @@ import { useLogin } from './loginContext';
 
 // Create a context for user data
 const UserContext = createContext();
-const host = "http://localhost:3001";
+const host = "https://yark-backend.onrender.com";
 
 const UserProvider = ({ children }) => {
   const { userToken, setLoginUser } = useLogin();

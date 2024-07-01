@@ -6,7 +6,7 @@ import { useLogin } from '../context/loginContext';
 import SpouseInfo from '../components/pageComponents/dashboardAboutPage/spouseInfo';
 import InLawsInfo from '../components/pageComponents/dashboardAboutPage/inLawsInfo';
 
-const host = "http://localhost:3001"; // Update with your actual host URL
+const host = "https://yark-backend.onrender.com"; // Update with your actual host URL
 
 const ProfileDashboard = () => {
   const [user, setUser] = useState(null); // State to hold user data, initialized as null
