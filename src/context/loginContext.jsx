@@ -9,7 +9,12 @@ const LoginProvider = ({ children }) => {
     });
 
     useEffect(() => {
-        localStorage.setItem('userToken', userToken);
+        if (userToken) {
+            localStorage.setItem('userToken', userToken);
+        } else {
+            localStorage.removeItem('userToken');
+        }
+        console.log("toekm",userToken);
     }, [userToken]);
 
     return (

@@ -12,7 +12,9 @@ import Details from './pages/Details';
 import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import ProfileDashboard from './pages/DashboardProfile';
-import ProtectedRoute from './components/ProtectedRoute'; // Import the ProtectedRoute component
+import ProtectedRoute from './components/ProtectedRoute'; 
+import Investments from './components/pageComponents/dashboardPage/InvestmentsPage';
+import AdminPanel from './components/pageComponents/adminPage/adminPannel';
 
 const Main = () => {
 
@@ -36,6 +38,8 @@ const Main = () => {
           }>
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<ProfileDashboard />} />
+            <Route path="investments" element={<Investments/>}/>
+            <Route path="admin" element={<AdminPanel/>}/>
           </Route>
         </Routes>
       </Router>

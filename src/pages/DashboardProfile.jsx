@@ -3,6 +3,8 @@ import axios from 'axios';
 import UserProfileInfo from '../components/pageComponents/dashboardAboutPage/userProfile';
 import FamilyMemberInfo from '../components/pageComponents/dashboardAboutPage/familyMemberInfo';
 import { useLogin } from '../context/loginContext';
+import SpouseInfo from '../components/pageComponents/dashboardAboutPage/spouseInfo';
+import InLawsInfo from '../components/pageComponents/dashboardAboutPage/inLawsInfo';
 
 const host = "http://localhost:3001"; // Update with your actual host URL
 
@@ -19,6 +21,8 @@ const ProfileDashboard = () => {
           },
         });
         setUser(response.data);
+        console.log(response.data);
+        console.log(response.data.inLaws[0])
       } catch (err) {
         console.error('Error fetching user data:', err);
       }
@@ -45,8 +49,9 @@ const ProfileDashboard = () => {
       {user.children && user.children.length > 0 && (
         <FamilyMemberInfo title="Children" members={user.children} />
       )}
-      {user.spouse && (
-        <FamilyMemberInfo title="Spouse" members={[user.spouse]} />
+      {user.spouse && user.spouse.length > 0 && (
+        <FamilyMemberInfo title="Spouse" members={user.spouse}
+      />
       )}
       {user.parents && user.parents.length > 0 && (
         <FamilyMemberInfo
@@ -62,8 +67,14 @@ const ProfileDashboard = () => {
           })))}
         />
       )}
+      {user.spouse && Object.keys(user.spouse).length > 0 && (
+        <SpouseInfo title="Spouse" member={user.spouse} />
+      )}
       {user.siblings && user.siblings.length > 0 && (
         <FamilyMemberInfo title="Siblings" members={user.siblings} />
+      )}
+      {user.inLaws && user.inLaws.length > 0 && (
+        <InLawsInfo title="InLaws" members={user.inLaws} />
       )}
     </div>
   );

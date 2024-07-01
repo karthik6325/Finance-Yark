@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import FinanceCalculator from './financeCalculator'; 
 import EducationPlanningCalculator from './educationCalculator';
+import MarriageCalculator from './marriageCalculator';
+import SIPCalculator from './sipCalculator';
+import CompoundInterestCalculator from './compountInterestCalculator';
 
 const ToolsList = () => {
   const [activeCalculator, setActiveCalculator] = useState(null);
@@ -51,7 +54,8 @@ const ToolsList = () => {
       <section id="finance-calculator" className="mt-10" style={{ height: '1000px' }}>
         <div className="flex justify-center items-center h-full bg-white rounded shadow">
           {activeCalculator === 'FIRE Calculator' ? <FinanceCalculator /> : 
-          activeCalculator === 'Education Calculator'?<EducationPlanningCalculator/>:<p>Select a calculator to load</p>
+          activeCalculator === 'Education Calculator'?<CompoundInterestCalculator/>:
+          activeCalculator === 'SIP Calculator'? <SIPCalculator/> : <p>Select a calculator to load</p>
           }
         </div>
       </section>

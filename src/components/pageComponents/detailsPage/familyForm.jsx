@@ -3,11 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import { useLogin } from '../../../context/loginContext';
-import { useUser } from  '../../../context/userContext'
+import { useUser } from '../../../context/userContext';
 
-const host="https://yark-backend.onrender.com";
-// http://localhost:3001
-// https://yark-backend.onrender.com
+const host = "http://localhost:3001";
 
 const UserDetails = () => {
   const navigate = useNavigate();
@@ -24,22 +22,29 @@ const UserDetails = () => {
       motherDOB: '',
     },
     siblings: [],
+    spouse: {
+      spouseName: '',
+      spouseDOB: '',
+      spouseGender: '',
+    },
+    inLaws: {
+      fatherInLawName: '',
+      fatherInLawDOB: '',
+      motherInLawName: '',
+      motherInLawDOB: '',
+    },
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    // Split the name to handle nested fields (e.g., "parents.fatherName")
     const nameParts = name.split('.');
 
-    // Copy the userDetails state
     const updatedUserDetails = { ...userDetails };
 
     if (nameParts.length === 1) {
-      // Simple fields
       updatedUserDetails[name] = value;
     } else if (nameParts.length === 2) {
-      // Nested fields (e.g., parents.fatherName)
       const [parent, child] = nameParts;
       updatedUserDetails[parent][child] = value;
     }
@@ -47,12 +52,12 @@ const UserDetails = () => {
     setUserDetails(updatedUserDetails);
   };
 
-  const handlechildrenChange = (index, e) => {
+  const handleChildrenChange = (index, e) => {
     const { name, value } = e.target;
-    const updatedchildren = userDetails.children.map((kid, i) => (i === index ? { ...kid, [name]: value } : kid));
+    const updatedChildren = userDetails.children.map((kid, i) => (i === index ? { ...kid, [name]: value } : kid));
     setUserDetails({
       ...userDetails,
-      children: updatedchildren,
+      children: updatedChildren,
     });
   };
 
@@ -64,10 +69,10 @@ const UserDetails = () => {
   };
 
   const handleRemoveKid = (index) => {
-    const updatedchildren = userDetails.children.filter((_, i) => i !== index);
+    const updatedChildren = userDetails.children.filter((_, i) => i !== index);
     setUserDetails({
       ...userDetails,
-      children: updatedchildren,
+      children: updatedChildren,
     });
   };
 
@@ -95,6 +100,28 @@ const UserDetails = () => {
     });
   };
 
+  const handleSpouseChange = (e) => {
+    const { name, value } = e.target;
+    setUserDetails({
+      ...userDetails,
+      spouse: {
+        ...userDetails.spouse,
+        [name]: value,
+      },
+    });
+  };
+
+  const handleInLawsChange = (e) => {
+    const { name, value } = e.target;
+    setUserDetails({
+      ...userDetails,
+      inLaws: {
+        ...userDetails.inLaws,
+        [name]: value,
+      },
+    });
+  };
+
   const nextPage = () => {
     if (validateFields()) {
       setCurrentPage(currentPage + 1);
@@ -104,25 +131,19 @@ const UserDetails = () => {
   };
 
   const prevPage = () => {
-    if (currentPage === 3) {
-      if (userDetails.maritalStatus === 'married' || userDetails.maritalStatus === 'single') {
-        setCurrentPage(1);
-      } else setCurrentPage(currentPage - 1);
-    } else setCurrentPage(currentPage - 1);
+    setCurrentPage(currentPage - 1);
   };
 
   const submitData = async () => {
-    console.log(userDetails);
     try {
-      const response = await axios.post(`${host}/api/v1/user`, userDetails,
-          {headers: {
-            Authorization: `Bearer ${userToken}`,
-          }
-        }
-      );
-      updateUser(userDetails)
-      console.log(response.data);  // Optional: Handle response from the server
-      navigate('/dashboard'); // Navigate after successful submission
+      const response = await axios.post(`${host}/api/v1/user`, userDetails, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      updateUser(userDetails);
+      console.log(response.data);
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error submitting data:', error);
       toast.error('Failed to submit data. Please try again later.');
@@ -135,10 +156,16 @@ const UserDetails = () => {
     } else if (currentPage === 2) {
       return userDetails.children.every((kid) => kid.name !== '' && kid.dob !== '' && kid.gender !== '');
     } else if (currentPage === 3) {
-      const { fatherName, fatherDOB, fatherGender, motherName, motherDOB, motherGender } = userDetails.parents;
-      return fatherName !== '' && fatherDOB !== '' && fatherGender !== '' && motherName !== '' && motherDOB !== '' && motherGender !== '';
+      const { fatherName, fatherDOB, motherName, motherDOB } = userDetails.parents;
+      return fatherName !== '' && fatherDOB !== '' && motherName !== '' && motherDOB !== '';
     } else if (currentPage === 4) {
       return userDetails.siblings.every((sibling) => sibling.name !== '' && sibling.dob !== '' && sibling.gender !== '');
+    } else if (currentPage === 5) {
+      const { spouseName, spouseDOB, spouseGender } = userDetails.spouse;
+      return spouseName !== '' && spouseDOB !== '' && spouseGender !== '';
+    } else if (currentPage === 6) {
+      const { fatherInLawName, fatherInLawDOB, motherInLawName, motherInLawDOB } = userDetails.inLaws;
+      return fatherInLawName !== '' && fatherInLawDOB !== '' && motherInLawName !== '' && motherInLawDOB !== '';
     }
     return true;
   };
@@ -172,77 +199,77 @@ const UserDetails = () => {
         if (userDetails.maritalStatus.includes('children') || userDetails.maritalStatus === '') {
           return (
             <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
-              <h1 className="text-center text-2xl font-bold mb-4">children Details</h1>
+              <h1 className="text-center text-2xl font-bold mb-4">Children Details</h1>
               <form>
                 {userDetails.children.map((kid, index) => (
                   <div key={index} className="mb-4">
                     <label className="block mb-2">
                       Kid Name <span className="text-red-500">*</span>
                     </label>
-                    <input type="text" name="name" value={kid.name} onChange={(e) => handlechildrenChange(index, e)} className="w-full py-2 px-4 border rounded" />
+                    <input type="text" name="name" value={kid.name} onChange={(e) => handleChildrenChange(index, e)} className="w-full py-2 px-4 border rounded" />
                     <label className="block mb-2">
                       Kid DOB <span className="text-red-500">*</span>
                     </label>
-                    <input type="date" name="dob" value={kid.dob} onChange={(e) => handlechildrenChange(index, e)} className="w-full py-2 px-4 border rounded" />
+                    <input type="date" name="dob" value={kid.dob} onChange={(e) => handleChildrenChange(index, e)} className="w-full py-2 px-4 border rounded" />
                     <label className="block mb-2">
                       Kid Gender <span className="text-red-500">*</span>
                     </label>
-                    <select name="gender" value={kid.gender} onChange={(e) => handlechildrenChange(index, e)} className="w-full py-2 px-4 border rounded">
+                    <select name="gender" value={kid.gender} onChange={(e) => handleChildrenChange(index, e)} className="w-full py-2 px-4 border rounded">
                       <option value="">Select</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                       <option value="other">Other</option>
                     </select>
-                    <button type="button" onClick={() => handleRemoveKid(index)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                    <button type="button" onClick={() => handleRemoveKid(index)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
                       Remove
                     </button>
                   </div>
                 ))}
-                <button type="button" onClick={handleAddKid} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                  Add Kid
-                </button>
               </form>
+              <button type="button" onClick={handleAddKid} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
+                Add Kid
+              </button>
               <div className="btn-container flex justify-between mt-4">
-                <button type="button" onClick={prevPage} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                   Previous
                 </button>
-                <button type="button" onClick={nextPage} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+                <button type="button" onClick={nextPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                   Next
                 </button>
               </div>
             </div>
           );
         } else {
-          nextPage();
+          setCurrentPage(currentPage + 1); // Skip this page if the user doesn't have children
         }
         break;
       case 3:
         return (
           <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
-            <h1 className="text-center text-2xl font-bold mb-4">Parents Details</h1>
-            <form onChange={handleChange}>
+            <h1 className="text-center text-2xl font-bold mb-4">Parent Details</h1>
+            <form>
               <label className="block mb-2">
-                Father's Name <span className="text-red-500">*</span>
+                Father Name <span className="text-red-500">*</span>
               </label>
               <input type="text" name="parents.fatherName" value={userDetails.parents.fatherName} onChange={handleChange} className="w-full py-2 px-4 border rounded" />
               <label className="block mb-2">
-                Father's DOB <span className="text-red-500">*</span>
+                Father DOB <span className="text-red-500">*</span>
               </label>
               <input type="date" name="parents.fatherDOB" value={userDetails.parents.fatherDOB} onChange={handleChange} className="w-full py-2 px-4 border rounded" />
-              <label className="block mt-4 mb-2">
-                Mother's Name <span className="text-red-500">*</span>
+              <label className="block mb-2">
+                Mother Name <span className="text-red-500">*</span>
               </label>
               <input type="text" name="parents.motherName" value={userDetails.parents.motherName} onChange={handleChange} className="w-full py-2 px-4 border rounded" />
               <label className="block mb-2">
-                Mother's DOB <span className="text-red-500">*</span>
+                Mother DOB <span className="text-red-500">*</span>
               </label>
               <input type="date" name="parents.motherDOB" value={userDetails.parents.motherDOB} onChange={handleChange} className="w-full py-2 px-4 border rounded" />
             </form>
             <div className="btn-container flex justify-between mt-4">
-              <button type="button" onClick={prevPage} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+              <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Previous
               </button>
-              <button type="button" onClick={nextPage} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+              <button type="button" onClick={nextPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Next
               </button>
             </div>
@@ -272,20 +299,90 @@ const UserDetails = () => {
                     <option value="female">Female</option>
                     <option value="other">Other</option>
                   </select>
-                  <button type="button" onClick={() => handleRemoveSibling(index)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                  <button type="button" onClick={() => handleRemoveSibling(index)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
                     Remove
                   </button>
                 </div>
               ))}
-              <button type="button" onClick={handleAddSibling} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                Add Sibling
-              </button>
             </form>
+            <button type="button" onClick={handleAddSibling} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
+              Add Sibling
+            </button>
             <div className="btn-container flex justify-between mt-4">
-              <button type="button" onClick={prevPage} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+              <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Previous
               </button>
-              <button type="button" onClick={submitData} className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded">
+              <button type="button" onClick={nextPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Next
+              </button>
+            </div>
+          </div>
+        );
+      case 5:
+        if (userDetails.maritalStatus === 'married' || userDetails.maritalStatus === 'married_with_children') {
+          return (
+            <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
+              <h1 className="text-center text-2xl font-bold mb-4">Spouse Details</h1>
+              <form>
+                <label className="block mb-2">
+                  Spouse Name <span className="text-red-500">*</span>
+                </label>
+                <input type="text" name="spouseName" value={userDetails.spouse.spouseName} onChange={handleSpouseChange} className="w-full py-2 px-4 border rounded" />
+                <label className="block mb-2">
+                  Spouse DOB <span className="text-red-500">*</span>
+                </label>
+                <input type="date" name="spouseDOB" value={userDetails.spouse.spouseDOB} onChange={handleSpouseChange} className="w-full py-2 px-4 border rounded" />
+                <label className="block mb-2">
+                  Spouse Gender <span className="text-red-500">*</span>
+                </label>
+                <select name="spouseGender" value={userDetails.spouse.spouseGender} onChange={handleSpouseChange} className="w-full py-2 px-4 border rounded">
+                  <option value="">Select</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
+              </form>
+              <div className="btn-container flex justify-between mt-4">
+                <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                  Previous
+                </button>
+                <button type="button" onClick={nextPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                  Next
+                </button>
+              </div>
+            </div>
+          );
+        } else {
+          setCurrentPage(currentPage + 1); // Skip this page if the user is not married
+        }
+        break;
+      case 6:
+        return (
+          <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
+            <h1 className="text-center text-2xl font-bold mb-4">In-Laws Details</h1>
+            <form>
+              <label className="block mb-2">
+                Father-In-Law Name <span className="text-red-500">*</span>
+              </label>
+              <input type="text" name="fatherInLawName" value={userDetails.inLaws.fatherInLawName} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              <label className="block mb-2">
+                Father-In-Law DOB <span className="text-red-500">*</span>
+              </label>
+              <input type="date" name="fatherInLawDOB" value={userDetails.inLaws.fatherInLawDOB} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              <label className="block mb-2">
+                Mother-In-Law Name <span className="text-red-500">*</span>
+              </label>
+              <input type="text" name="motherInLawName" value={userDetails.inLaws.motherInLawName} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              <label className="block mb-2">
+                Mother-In-Law DOB <span className="text-red-500">*</span>
+              </label>
+              <input type="date" name="motherInLawDOB" value={userDetails.inLaws.motherInLawDOB} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+            </form>
+            <div className="btn-container flex justify-between mt-4">
+              <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                Previous
+              </button>
+              <button type="button" onClick={submitData} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                 Submit
               </button>
             </div>
@@ -296,11 +393,7 @@ const UserDetails = () => {
     }
   };
 
-  return (
-    <div className="flex justify-center items-center h-screen">
-      {renderPage()}
-    </div>
-  );
+  return <div className="min-h-screen flex items-center justify-center">{renderPage()}</div>;
 };
 
 export default UserDetails;

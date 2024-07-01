@@ -3,22 +3,24 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useLogin } from '../context/loginContext';
-const host="https://yark-backend.onrender.com";
+import { useUser } from "../context/userContext";
+const host="http://localhost:3001";
 // http://localhost:3001
 // https://yark-backend.onrender.com
 
 const Login = () => {
     const { setLoginUser } = useLogin();
     const history = useNavigate();
-    const [user, setUser] = useState({
+    const { user } = useUser();
+    const [userID, setUserID] = useState({
         email: "",
         password: ""
     });
 
     const handleChange = e => {
         const { name, value } = e.target;
-        setUser({
-            ...user,
+        setUserID({
+            ...userID,
             [name]: value
         });
     };
@@ -26,12 +28,13 @@ const Login = () => {
     const login = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${host}/api/v1/login`, user);
+            const response = await axios.post(`${host}/api/v1/login`, userID);
             const token = response.data.token;
             document.cookie = `token=${token}; Path=/; HttpOnly; Secure; SameSite=Strict`;
             setLoginUser(response.data.token);
-            // console.log(response.data.token);
-            history("/details");
+            console.log(response.data);
+            if(user && user.parents && user.parents.length === 0) history("/details");
+            else history("/dashboard");
         } catch (error) {
             toast.error("Invalid email id or password!");
             console.error(error);
@@ -45,7 +48,7 @@ const Login = () => {
                 <input 
                     type="text" 
                     name="email" 
-                    value={user.email} 
+                    value={userID.email} 
                     onChange={handleChange} 
                     placeholder="Enter your Email" 
                     className="w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
@@ -53,7 +56,7 @@ const Login = () => {
                 <input 
                     type="password" 
                     name="password" 
-                    value={user.password} 
+                    value={userID.password} 
                     onChange={handleChange} 
                     placeholder="Enter your Password" 
                     className="w-full mb-4 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"

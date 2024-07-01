@@ -4,10 +4,10 @@ import { useLogin } from './loginContext';
 
 // Create a context for user data
 const UserContext = createContext();
-const host = "https://yark-backend.onrender.com";
+const host = "http://localhost:3001";
 
 const UserProvider = ({ children }) => {
-  const { userToken } = useLogin();
+  const { userToken, setLoginUser } = useLogin();
   const [user, setUser] = useState(() => {
     const savedUser = localStorage.getItem('user');
     return savedUser ? JSON.parse(savedUser) : {};
@@ -23,13 +23,16 @@ const UserProvider = ({ children }) => {
           }
         });
         setUser(response.data);
-        console.log("User data fetched:", response.data);
       } catch (err) {
+        if(err.response.status === 403){
+          localStorage.removeItem('userToken');
+          setLoginUser('')
+        }
         console.error("Error fetching user data:", err);
       }
     };
 
-    fetchUserData(); 
+    if(userToken !== '') fetchUserData(); 
   }, [userToken]); 
 
   const updateUser = async (updatedUser) => {
