@@ -33,7 +33,8 @@ const Login = () => {
             document.cookie = `token=${token}; Path=/; HttpOnly; Secure; SameSite=Strict`;
             setLoginUser(response.data.token);
             console.log(response.data);
-            if(user && user.parents && user.parents.length === 0) history("/details");
+            console.log(user)
+            if(response.data.detailsRequired) history("/details");
             else history("/dashboard");
         } catch (error) {
             toast.error("Invalid email id or password!");

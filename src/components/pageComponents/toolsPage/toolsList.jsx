@@ -51,7 +51,7 @@ const ToolsList = () => {
           </button>
         </div>
       </section>
-      <section id="finance-calculator" className="mt-10" style={{ height: '1000px' }}>
+      <section id="finance-calculator" className="mt-10" style={{ height: '1500px' }}>
         <div className="flex justify-center items-center h-full bg-white rounded shadow">
           {activeCalculator === 'FIRE Calculator' ? <FinanceCalculator /> : 
           activeCalculator === 'Education Calculator' ?<EducationPlanningCalculator/> :

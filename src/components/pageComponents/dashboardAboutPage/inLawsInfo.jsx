@@ -9,13 +9,13 @@ const InLawsInfo = ({ title, members }) => {
                   <strong>Father in Law's Name:</strong> {members[0].fatherInLawName}
                 </div>
                 <div className="text-gray-700 mb-1">
-                  <strong>Father in Law's DOB:</strong> {members[0].fatherInLawDOB}
+                  <strong>Father in Law's DOB:</strong> {new Date(members[0].fatherInLawDOB).toLocaleDateString()}
                 </div>
                 <div className="text-gray-700 mb-1">
                   <strong>Mother in Law's Name:</strong> {members[0].motherInLawName}
                 </div>
                 <div className="text-gray-700 mb-1">
-                  <strong>Mother in Law's DOB:</strong> {members[0].motherInLawName}
+                  <strong>Mother in Law's DOB:</strong> {new Date(members[0].motherInLawDOB).toLocaleDateString()}
                 </div>
           </div>
     </div>

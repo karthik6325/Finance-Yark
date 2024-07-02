@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+
+Chart.register(...registerables);
 
 const CompoundInterestCalculator = () => {
   const [investmentAmount, setInvestmentAmount] = useState(10000);
-  const [investmentFrequency, setInvestmentFrequency] = useState('Monthly');
-  const [investmentDuration, setInvestmentDuration] = useState(5);
-  const [stayInvestedDuration, setStayInvestedDuration] = useState(10);
+  const [investmentFrequency, setInvestmentFrequency] = useState('Yearly');
+  const [investmentDuration, setInvestmentDuration] = useState(10);
+  const [stayInvestedDuration, setStayInvestedDuration] = useState(15);
   const [rateOfReturn, setRateOfReturn] = useState(8);
   const [futureValue, setFutureValue] = useState(0);
+  const [chartData, setChartData] = useState({ labels: [], datasets: [] });
 
   const calculateFutureValue = () => {
     let n = 0;
@@ -20,19 +25,53 @@ const CompoundInterestCalculator = () => {
       n = 1;
     }
 
-    const r = rateOfReturn / 100;
+    let r = rateOfReturn / 100 / n;
     const P = investmentAmount;
+    const nt = n * investmentDuration;
 
-    let A = 0;
-    if (investmentFrequency === 'Once') {
-      A = P * Math.pow(1 + r, stayInvestedDuration);
-    } else {
-      const nt = n * stayInvestedDuration;
-      const nr = r / n;
-      A = P * (Math.pow(1 + nr, nt) - 1) / nr;
+    let A = P;
+    let B = 0;
+
+    const years = [];
+    const totalAmounts = [];
+    const interestAmounts = [];
+    const principalAmounts = [];
+
+    for (let i = 1; i <= Math.max(nt, stayInvestedDuration * n); i++) {
+      let tmp = A * r;
+      if (i <= nt) B += P;
+      if (i % n === 0) {
+        years.push(new Date().getFullYear() + i / n);
+        totalAmounts.push(A + tmp);
+        interestAmounts.push(A + tmp - B);
+        principalAmounts.push(B);
+      }
+      if (i < nt) A = A + tmp + P;
+      else A = A + tmp;
     }
 
-    setFutureValue(A.toFixed(2));
+    setChartData({
+      labels: years,
+      datasets: [
+        {
+          label: 'Total Amount',
+          backgroundColor: '#00C49F',
+          data: totalAmounts,
+        },
+        {
+          label: 'Principal Amount',
+          backgroundColor: '#FFBB28',
+          data: principalAmounts,
+        },
+        {
+          label: 'Interest Amount',
+          backgroundColor: '#FF8042',
+          data: interestAmounts,
+        },
+      ],
+    });
+
+    setFutureValue(A.toFixed(0));
   };
 
   return (
@@ -109,6 +148,19 @@ const CompoundInterestCalculator = () => {
             </div>
           )}
         </div>
+        {chartData.labels.length > 0 && (
+          <div className="w-full p-5">
+            <Bar
+              data={chartData}
+              options={{
+                scales: {
+                  x: { title: { display: true, text: 'Year' } },
+                  y: { title: { display: true, text: 'Amount (₹)' } }
+                }
+              }}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

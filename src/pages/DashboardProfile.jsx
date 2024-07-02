@@ -22,7 +22,6 @@ const ProfileDashboard = () => {
         });
         setUser(response.data);
         console.log(response.data);
-        console.log(response.data.inLaws[0])
       } catch (err) {
         console.error('Error fetching user data:', err);
       }

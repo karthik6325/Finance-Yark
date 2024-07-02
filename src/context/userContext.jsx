@@ -9,7 +9,7 @@ const host = process.env.REACT_APP_HOST;
 const UserProvider = ({ children }) => {
   const { userToken, setLoginUser } = useLogin();
   const [user, setUser] = useState(() => {
-    const savedUser = localStorage.getItem('user');
+    const savedUser = localStorage.removeItem('user');
     return savedUser ? JSON.parse(savedUser) : {};
   });
 
