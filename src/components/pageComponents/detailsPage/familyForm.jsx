@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useLogin } from '../../../context/loginContext';
 import { useUser } from '../../../context/userContext';
 
-const host = "https://yark-backend.onrender.com";
+const host = process.env.REACT_APP_HOST;
 
 const UserDetails = () => {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-const host="https://yark-backend.onrender.com";
+const host = process.env.REACT_APP_HOST;
 // http://localhost:3001
 // https://yark-backend.onrender.com
 

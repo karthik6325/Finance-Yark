@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { useLogin } from '../context/loginContext';
 import { useUser } from "../context/userContext";
-const host="https://yark-backend.onrender.com";
+const host = process.env.REACT_APP_HOST;
 // http://localhost:3001
 // https://yark-backend.onrender.com
 

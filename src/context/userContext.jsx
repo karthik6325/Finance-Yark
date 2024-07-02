@@ -4,7 +4,7 @@ import { useLogin } from './loginContext';
 
 // Create a context for user data
 const UserContext = createContext();
-const host = "https://yark-backend.onrender.com";
+const host = process.env.REACT_APP_HOST;
 
 const UserProvider = ({ children }) => {
   const { userToken, setLoginUser } = useLogin();
