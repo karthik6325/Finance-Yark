@@ -4,15 +4,10 @@ import { useLogin } from '../context/loginContext';
 
 const ProtectedRoute = ({ children }) => {
   const { userToken } = useLogin();
-  if(userToken === '') return <Navigate to="/" replace />;
-  else if (userToken && userToken === '') {
+  if(userToken !== '') return children
+  else {
     return <Navigate to="/" replace />;
   }
-  else {
-    
-  }
-  
-  return children;
 };
 
 export default ProtectedRoute;

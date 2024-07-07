@@ -35,6 +35,10 @@ const UserProvider = ({ children }) => {
     if(userToken !== '') fetchUserData(); 
   }, [userToken, setLoginUser]); 
 
+  useEffect(()=>{
+    console.log(user);
+  },[user])
+
   const updateUser = async (updatedUser) => {
     try {
       setUser(updatedUser);

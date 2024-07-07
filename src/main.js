@@ -14,7 +14,8 @@ import Layout from './components/Layout';
 import ProfileDashboard from './pages/DashboardProfile';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import Investments from './components/pageComponents/dashboardPage/InvestmentsPage';
-import AdminPanel from './components/pageComponents/adminPage/adminPannel';
+import Admin from './pages/Admin';
+import AdminRoute from './components/AdminRoute';
 
 const Main = () => {
 
@@ -39,7 +40,14 @@ const Main = () => {
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<ProfileDashboard />} />
             <Route path="investments" element={<Investments/>}/>
-            <Route path="admin" element={<AdminPanel/>}/>
+          </Route>
+          <Route path="/admin" element={
+            <AdminRoute>
+              <Admin />
+            </AdminRoute>
+          }>
+            <Route index element={<Admin />} />
+            <Route path="edit" element={<ProfileDashboard />} />
           </Route>
         </Routes>
       </Router>

@@ -136,6 +136,7 @@ const UserDetails = () => {
 
   const submitData = async () => {
     try {
+      console.log(userDetails)
       const response = await axios.post(`${host}/api/v1/user`, userDetails, {
         headers: {
           Authorization: `Bearer ${userToken}`,
@@ -159,13 +160,13 @@ const UserDetails = () => {
       const { fatherName, fatherDOB, motherName, motherDOB } = userDetails.parents;
       return fatherName !== '' && fatherDOB !== '' && motherName !== '' && motherDOB !== '';
     } else if (currentPage === 4) {
-      return userDetails.siblings.every((sibling) => sibling.name !== '' && sibling.dob !== '' && sibling.gender !== '');
+      const { fatherInLawName, fatherInLawDOB, motherInLawName, motherInLawDOB } = userDetails.inLaws;
+      return fatherInLawName !== '' && fatherInLawDOB !== '' && motherInLawName !== '' && motherInLawDOB !== '';
     } else if (currentPage === 5) {
       const { spouseName, spouseDOB, spouseGender } = userDetails.spouse;
       return spouseName !== '' && spouseDOB !== '' && spouseGender !== '';
     } else if (currentPage === 6) {
-      const { fatherInLawName, fatherInLawDOB, motherInLawName, motherInLawDOB } = userDetails.inLaws;
-      return fatherInLawName !== '' && fatherInLawDOB !== '' && motherInLawName !== '' && motherInLawDOB !== '';
+      return userDetails.siblings.every((sibling) => sibling.name !== '' && sibling.dob !== '' && sibling.gender !== '');
     }
     return true;
   };
@@ -276,48 +277,42 @@ const UserDetails = () => {
           </div>
         );
       case 4:
+        if (userDetails.maritalStatus === 'married' || userDetails.maritalStatus === 'married_with_children') {
         return (
           <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
-            <h1 className="text-center text-2xl font-bold mb-4">Siblings Details</h1>
+            <h1 className="text-center text-2xl font-bold mb-4">In-Laws Details</h1>
             <form>
-              {userDetails.siblings.map((sibling, index) => (
-                <div key={index} className="mb-4">
-                  <label className="block mb-2">
-                    Sibling Name <span className="text-red-500">*</span>
-                  </label>
-                  <input type="text" name="name" value={sibling.name} onChange={(e) => handleSiblingsChange(index, e)} className="w-full py-2 px-4 border rounded" />
-                  <label className="block mb-2">
-                    Sibling DOB <span className="text-red-500">*</span>
-                  </label>
-                  <input type="date" name="dob" value={sibling.dob} onChange={(e) => handleSiblingsChange(index, e)} className="w-full py-2 px-4 border rounded" />
-                  <label className="block mb-2">
-                    Sibling Gender <span className="text-red-500">*</span>
-                  </label>
-                  <select name="gender" value={sibling.gender} onChange={(e) => handleSiblingsChange(index, e)} className="w-full py-2 px-4 border rounded">
-                    <option value="">Select</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                  <button type="button" onClick={() => handleRemoveSibling(index)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
-                    Remove
-                  </button>
-                </div>
-              ))}
+              <label className="block mb-2">
+                Father-In-Law Name <span className="text-red-500">*</span>
+              </label>
+              <input type="text" name="fatherInLawName" value={userDetails.inLaws.fatherInLawName} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              <label className="block mb-2">
+                Father-In-Law DOB <span className="text-red-500">*</span>
+              </label>
+              <input type="date" name="fatherInLawDOB" value={userDetails.inLaws.fatherInLawDOB} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              <label className="block mb-2">
+                Mother-In-Law Name <span className="text-red-500">*</span>
+              </label>
+              <input type="text" name="motherInLawName" value={userDetails.inLaws.motherInLawName} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              <label className="block mb-2">
+                Mother-In-Law DOB <span className="text-red-500">*</span>
+              </label>
+              <input type="date" name="motherInLawDOB" value={userDetails.inLaws.motherInLawDOB} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
             </form>
-            <button type="button" onClick={handleAddSibling} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
-              Add Sibling
-            </button>
             <div className="btn-container flex justify-between mt-4">
               <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Previous
               </button>
-              <button type="button" onClick={nextPage} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+              <button type="button" onClick={nextPage} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                 Next
               </button>
             </div>
           </div>
         );
+      } else {
+        setCurrentPage(currentPage + 1); 
+      }
+      break;
       case 5:
         if (userDetails.maritalStatus === 'married' || userDetails.maritalStatus === 'married_with_children') {
           return (
@@ -359,30 +354,41 @@ const UserDetails = () => {
       case 6:
         return (
           <div className="container p-4 bg-gray-100 rounded-lg mx-auto max-w-md my-auto">
-            <h1 className="text-center text-2xl font-bold mb-4">In-Laws Details</h1>
+            <h1 className="text-center text-2xl font-bold mb-4">Siblings Details</h1>
             <form>
-              <label className="block mb-2">
-                Father-In-Law Name <span className="text-red-500">*</span>
-              </label>
-              <input type="text" name="fatherInLawName" value={userDetails.inLaws.fatherInLawName} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
-              <label className="block mb-2">
-                Father-In-Law DOB <span className="text-red-500">*</span>
-              </label>
-              <input type="date" name="fatherInLawDOB" value={userDetails.inLaws.fatherInLawDOB} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
-              <label className="block mb-2">
-                Mother-In-Law Name <span className="text-red-500">*</span>
-              </label>
-              <input type="text" name="motherInLawName" value={userDetails.inLaws.motherInLawName} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
-              <label className="block mb-2">
-                Mother-In-Law DOB <span className="text-red-500">*</span>
-              </label>
-              <input type="date" name="motherInLawDOB" value={userDetails.inLaws.motherInLawDOB} onChange={handleInLawsChange} className="w-full py-2 px-4 border rounded" />
+              {userDetails.siblings.map((sibling, index) => (
+                <div key={index} className="mb-4">
+                  <label className="block mb-2">
+                    Sibling Name <span className="text-red-500">*</span>
+                  </label>
+                  <input type="text" name="name" value={sibling.name} onChange={(e) => handleSiblingsChange(index, e)} className="w-full py-2 px-4 border rounded" />
+                  <label className="block mb-2">
+                    Sibling DOB <span className="text-red-500">*</span>
+                  </label>
+                  <input type="date" name="dob" value={sibling.dob} onChange={(e) => handleSiblingsChange(index, e)} className="w-full py-2 px-4 border rounded" />
+                  <label className="block mb-2">
+                    Sibling Gender <span className="text-red-500">*</span>
+                  </label>
+                  <select name="gender" value={sibling.gender} onChange={(e) => handleSiblingsChange(index, e)} className="w-full py-2 px-4 border rounded">
+                    <option value="">Select</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                    <option value="other">Other</option>
+                  </select>
+                  <button type="button" onClick={() => handleRemoveSibling(index)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2">
+                    Remove
+                  </button>
+                </div>
+              ))}
             </form>
+            <button type="button" onClick={handleAddSibling} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4">
+              Add Sibling
+            </button>
             <div className="btn-container flex justify-between mt-4">
               <button type="button" onClick={prevPage} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
                 Previous
               </button>
-              <button type="button" onClick={submitData} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+              <button type="button" onClick={submitData} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Submit
               </button>
             </div>
