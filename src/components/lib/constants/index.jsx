@@ -18,6 +18,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		icon: <HiOutlineCube />
 	},
 	{
+		key: 'MyDocuments',
+		label: 'My Documents',
+		path: '/dashboard/documents',
+		icon: <HiOutlineShoppingCart />
+	},
+	{
 		key: 'invetments',
 		label: 'Invetments',
 		path: '/dashboard/investments',

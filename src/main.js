@@ -40,6 +40,12 @@ const Main = () => {
             <Route index element={<Dashboard />} />
             <Route path="profile" element={<ProfileDashboard />} />
             <Route path="investments" element={<Investments/>}/>
+            <Route path="documents" element={<ProfileDashboard />} />
+            <Route path="goal" element={<ProfileDashboard />} />
+            <Route path="tools" element={<ProfileDashboard />} />
+            <Route path="budget" element={<ProfileDashboard />} />
+            <Route path="couple" element={<ProfileDashboard />} />
+            <Route path="learn" element={<ProfileDashboard />} />
           </Route>
           <Route path="/admin" element={
             <AdminRoute>
