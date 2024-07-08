@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import axios from 'axios';
 import { useLogin } from '../../../context/loginContext';
+import InvestmentTable from './InestmentTable';
 
 const host = process.env.REACT_APP_HOST;
 
@@ -44,7 +45,9 @@ export default function Investments() {
 
   const handleSubmit = async () => {
     try {
-      console.log("tokennnnn",userToken)
+      if (['Gold', 'Shares', 'Mutual funds', 'Bonds', 'Crypto'].includes(selectedType)) {
+        formData.InvestmentType = selectedType;
+      }
       const response = await axios.post(`${host}/api/v1/addinvest`, { selectedType, formData },
       {
         headers: {
@@ -88,6 +91,13 @@ export default function Investments() {
     }
   };
 
+  const checkInvestment = (InvestmentType) => {
+    if(investment && investment.length > 0 && investment.some(item => item.InvestmentType.includes(InvestmentType)))
+      return true;
+    else return false;
+  }
+
+
   return  (
     <div className="w-[160vh] p-4 bg-white">
       <div className="flex justify-between items-center mb-4">
@@ -100,38 +110,31 @@ export default function Investments() {
         </button>
       </div>
       <div>
-        { investment && investment.length > 0 ?
         <div>
-          <h2 className="text-xl font-semibold">Investments</h2>
-        <table className="min-w-full bg-white border border-gray-200">
-            <thead>
-              <tr>
-                <th className="py-2 px-4 border-b text-left">Number</th>
-                <th className="py-2 px-4 border-b text-left">Scheme Name</th>
-                <th className="py-2 px-4 border-b text-left">SIP Lumpsum</th>
-                <th className="py-2 px-4 border-b text-left">Expected Returns</th>
-                <th className="py-2 px-4 border-b text-left">Committed For Years</th>
-                <th className="py-2 px-4 border-b text-left">Current Value</th>
-                <th className="py-2 px-4 border-b text-left">Maturity Date</th>
-              </tr>
-            </thead>
-          <tbody>
-            {investment && investment.map((item, index) => (
-              <tr key={index}>
-                <td className="py-2 px-4 border-b">{item.Number}</td>
-                <td className="py-2 px-4 border-b">{item.SchemeName}</td>
-                <td className="py-2 px-4 border-b">{item.SIPLumpsum}</td>
-                <td className="py-2 px-4 border-b">{item.ExpectedReturns}</td>
-                <td className="py-2 px-4 border-b">{item.CommittedForYears}</td>
-                <td className="py-2 px-4 border-b">{item.CurrentValue}</td>
-                <td className="py-2 px-4 border-b">{new Date(item.MaturityDate).toLocaleDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          { investment && investment.length > 0 && checkInvestment('Gold') ?
+          <InvestmentTable investment={investment} investmentType='Gold'/> : null
+          }
         </div>
-        : null
-        }
+        <div>
+          { investment && investment.length > 0 && checkInvestment('Shares') ?
+          <InvestmentTable investment={investment} investmentType='Shares'/> : null
+          }
+        </div>
+        <div>
+          { investment && investment.length > 0 && checkInvestment('Mutual funds') ?
+          <InvestmentTable investment={investment} investmentType='Mutual funds'/> : null
+          }
+        </div>
+        <div>
+          { investment && investment.length > 0 && checkInvestment('Bonds') ?
+          <InvestmentTable investment={investment} investmentType='Bonds'/> : null
+          }
+        </div>
+        <div>
+          { investment && investment.length > 0 && checkInvestment('Crypto') ?
+          <InvestmentTable investment={investment} investmentType='Crypto'/> : null
+          }
+        </div>
         { lifeInsurance && lifeInsurance.length > 0 ?
          <div className='overflow-x-auto'>
           <h2 className="text-xl font-semibold mt-5 overflow-x-auto">Life Insurance</h2>
@@ -158,7 +161,7 @@ export default function Investments() {
               </tr>
             </thead>
           <tbody>
-            {lifeInsurance && lifeInsurance.map((item, index) => (
+            {lifeInsurance.map((item, index) => (
               <tr key={index}>
                 <td className="py-2 px-4 border-b">{item.Number }</td>
                 <td className="py-2 px-4 border-b">{new Date(item.PolicyStartDate).toLocaleDateString()}</td>
