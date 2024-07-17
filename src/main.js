@@ -16,7 +16,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Investments from './components/pageComponents/dashboardPage/InvestmentsPage';
 import Admin from './pages/Admin';
 import AdminRoute from './components/AdminRoute';
-import DashboardDocuments from './pages/DashboardDocuments'
+import DashboardDocuments from './pages/DashboardDocuments';
+import PremiumToolsList from './components/pageComponents/premiumCalculators/premiumCalculators';
+import DashboardHealth from './pages/DashboardHealthPage';
 
 const Main = () => {
 
@@ -42,8 +44,9 @@ const Main = () => {
             <Route path="profile" element={<ProfileDashboard />} />
             <Route path="investments" element={<Investments/>}/>
             <Route path="documents" element={<DashboardDocuments />} />
+            <Route path="health" element={<DashboardHealth />} />
             <Route path="goal" element={<ProfileDashboard />} />
-            <Route path="tools" element={<ProfileDashboard />} />
+            <Route path="tools" element={<PremiumToolsList />} />
             <Route path="budget" element={<ProfileDashboard />} />
             <Route path="couple" element={<ProfileDashboard />} />
             <Route path="learn" element={<ProfileDashboard />} />

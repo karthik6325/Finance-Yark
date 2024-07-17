@@ -30,6 +30,12 @@ export const DASHBOARD_SIDEBAR_LINKS = [
 		icon: <HiOutlineShoppingCart />
 	},
 	{
+		key: 'healthPage',
+		label: 'Health Insurance',
+		path: '/dashboard/health',
+		icon: <HiOutlineShoppingCart />
+	},
+	{
 		key: 'goalVector',
 		label: 'Goal Vector',
 		path: '/dashboard/goal',
