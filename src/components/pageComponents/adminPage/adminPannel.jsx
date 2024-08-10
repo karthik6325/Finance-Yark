@@ -126,7 +126,7 @@ const AdminPanel = () => {
 
   const handleReviewAction = async (reviewId, action) => {
     try {
-      const response = await axios.post(`${host}/api/v1/review/${action}`, { reviewId }, {
+      await axios.post(`${host}/api/v1/review/${action}`, { reviewId }, {
         headers: {
           Authorization: `Bearer ${userToken}`,
         },

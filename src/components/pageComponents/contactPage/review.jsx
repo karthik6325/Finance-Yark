@@ -30,7 +30,7 @@ const Review = () => {
     }
   
     try {
-      const response = await axios.post(`${host}/api/v1/review`, formData, {
+      await axios.post(`${host}/api/v1/review`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
