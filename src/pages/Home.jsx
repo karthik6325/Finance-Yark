@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import Hero from '../components/Hero';
 import Planning from '../components/Planning';
 import Navbar from '../components/Navbar';
+import Reviews from '../components/Reviews';
 
 function Home() {
   return (
@@ -12,6 +13,7 @@ function Home() {
       <Navbar/>
       <Hero />
       <Analytics />
+      <Reviews/>
       <Planning />
       <Cards />
       <Footer />

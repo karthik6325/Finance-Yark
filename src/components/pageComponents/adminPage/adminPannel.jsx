@@ -4,20 +4,34 @@ import { useLogin } from '../../../context/loginContext';
 import axios from 'axios';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { IoPeople } from 'react-icons/io5'
+import { IoPeople, IoThumbsUp, IoThumbsDown } from 'react-icons/io5';
 
 const host = process.env.REACT_APP_HOST;
+
+const byteArrayToBase64 = (byteArray) => {
+  let binary = '';
+  const bytes = new Uint8Array(byteArray);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return window.btoa(binary);
+};
 
 const AdminPanel = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [search, setSearch] = useState({ name: '', email: '', location: '', phoneNumber: '' });
   const [selectedRow, setSelectedRow] = useState(null);
-  const [userToDelete, setUserToDelete] = useState(null); // State to manage the user to delete
-  const [isPopupOpen, setIsPopupOpen] = useState(false); // State to manage the popup visibility
-  const itemsPerPage = 10;
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const { userToken } = useLogin();
   const popupRef = useRef(null);
+  const [statusMessage, setStatusMessage] = useState('');
+  const [showStatusPopup, setShowStatusPopup] = useState(false);
+
+  const itemsPerPage = 10;
 
   const handlePageClick = ({ selected }) => {
     setCurrentPage(selected);
@@ -36,8 +50,19 @@ const AdminPanel = () => {
     }
   };
 
+  const getAllReviews = async () => {
+    try {
+      const response = await axios.get(`${host}/api/v1/reviews`);
+      console.log("Admin",response.data);
+      setReviews(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     getAllUsers();
+    getAllReviews();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -99,6 +124,29 @@ const AdminPanel = () => {
     }
   };
 
+  const handleReviewAction = async (reviewId, action) => {
+    try {
+      const response = await axios.post(`${host}/api/v1/review/${action}`, { reviewId }, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      
+      // Set status message based on the action
+      const message = action === 'accept' ? 'Review accepted' : 'Review rejected';
+      setStatusMessage(message);
+      setShowStatusPopup(true);
+
+      // Remove the review from the list
+      setReviews(reviews.filter(review => review._id !== reviewId));
+      
+    } catch (error) {
+      console.error(error);
+      setStatusMessage('An error occurred');
+      setShowStatusPopup(true);
+    }
+  };
+
   const filteredData = allUsers
     ? allUsers.filter((user) => {
         const match = Object.keys(search).every((key) =>
@@ -117,19 +165,19 @@ const AdminPanel = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full h-[90vh] m-10 p-4 bg-white shadow-lg rounded-lg">
+        {/* User Management Section */}
         <div>
-
-      <BoxWrapper>
-				<div className="rounded-full h-12 w-12 flex items-center justify-center bg-yellow-400">
-					<IoPeople className="text-2xl text-white" />
-				</div>
-				<div className="pl-4">
-					<span className="text-sm text-gray-500 font-light">Total Customers</span>
-					<div className="flex items-center">
-						<strong className="text-xl text-gray-700 font-semibold">{allUsers.length}</strong>
-					</div>
-				</div>
-			</BoxWrapper>
+          <BoxWrapper>
+            <div className="rounded-full h-12 w-12 flex items-center justify-center bg-yellow-400">
+              <IoPeople className="text-2xl text-white" />
+            </div>
+            <div className="pl-4">
+              <span className="text-sm text-gray-500 font-light">Total Customers</span>
+              <div className="flex items-center">
+                <strong className="text-xl text-gray-700 font-semibold">{allUsers.length}</strong>
+              </div>
+            </div>
+          </BoxWrapper>
         </div>
         <h2 className="text-2xl font-semibold mb-4 mt-6">Admin Panel</h2>
         <table className="w-full bg-white border border-gray-200">
@@ -241,21 +289,89 @@ const AdminPanel = () => {
           activeClassName={'bg-blue-500 text-white'}
           activeLinkClassName={'px-3 py-1 border rounded'}
         />
-        <Popup open={isPopupOpen} closeOnDocumentClick onClose={() => setIsPopupOpen(false)}>
+        {/* Review Management Section */}
+        <h2 className="text-2xl font-semibold mb-4 mt-6">Review Management</h2>
+        <table className="w-full bg-white border border-gray-200">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b text-left">Image</th>
+              <th className="py-2 px-4 border-b text-left">Name</th>
+              <th className="py-2 px-4 border-b text-left">Rating</th>
+              <th className="py-2 px-4 border-b text-left">Description</th>
+              <th className="py-2 px-4 border-b text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reviews.length > 0 ? (
+              reviews.map((review) => (
+                <tr key={review._id}>
+                  <td className="py-2 px-4 border-b">
+                    {review.image && review.image.data ? (
+                      <img
+                      src={`data:${review.image.contentType};base64,${byteArrayToBase64(review.image.data.data)}`}
+                      alt="Review"
+                      className="w-20 h-20 object-cover rounded-full"
+                    />
+                    ) : (
+                      <span>No Image</span>
+                    )}
+                  </td>
+                  <td className="py-2 px-4 border-b">{review.name}</td>
+                  <td className="py-2 px-4 border-b">{review.rating}</td>
+                  <td className="py-2 px-4 border-b">{review.description}</td>
+                  <td className="py-2 px-4 border-b flex space-x-2">
+                    <button
+                      onClick={() => handleReviewAction(review._id, 'accept')}
+                      className="text-green-500 hover:text-green-700"
+                    >
+                      <IoThumbsUp />
+                    </button>
+                    <button
+                      onClick={() => handleReviewAction(review._id, 'reject')}
+                      className="ml-4 text-red-500 hover:text-red-700"
+                    >
+                      <IoThumbsDown />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="5" className="py-2 px-4 border-b text-center">
+                  No reviews found
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+        <Popup open={showStatusPopup} onClose={() => setShowStatusPopup(false)}>
           <div className="p-4">
-            <h3 className="text-xl mb-4">Are you sure you want to delete {userToDelete?.name}?</h3>
-            <div className="flex justify-end">
+            <h2 className="text-lg font-semibold">{statusMessage}</h2>
+            <div className="mt-4">
               <button
-                onClick={() => setIsPopupOpen(false)}
-                className="mr-2 px-4 py-2 bg-gray-200 rounded"
+                onClick={() => setShowStatusPopup(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
               >
-                No
+                Close
               </button>
+            </div>
+          </div>
+        </Popup>
+        <Popup open={isPopupOpen} onClose={() => setIsPopupOpen(false)}>
+          <div ref={popupRef} className="p-4">
+            <h2 className="text-lg font-semibold">Are you sure you want to delete this user?</h2>
+            <div className="mt-4">
               <button
                 onClick={handleDeleteConfirm}
                 className="px-4 py-2 bg-red-500 text-white rounded"
               >
-                Yes
+                Confirm
+              </button>
+              <button
+                onClick={() => setIsPopupOpen(false)}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded ml-4"
+              >
+                Cancel
               </button>
             </div>
           </div>
@@ -265,10 +381,10 @@ const AdminPanel = () => {
   );
 };
 
+const BoxWrapper = ({ children }) => (
+  <div className="flex items-center p-4 bg-white shadow rounded">
+    {children}
+  </div>
+);
+
 export default AdminPanel;
-
-
-function BoxWrapper({ children }) {
-	return <div className="bg-white rounded-sm p-4 flex-1 border border-gray-200 flex items-center">{children}</div>
-}
-

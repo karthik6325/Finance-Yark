@@ -19,6 +19,9 @@ import AdminRoute from './components/AdminRoute';
 import DashboardDocuments from './pages/DashboardDocuments';
 import PremiumToolsList from './components/pageComponents/premiumCalculators/premiumCalculators';
 import DashboardHealth from './pages/DashboardHealthPage';
+import DashboardGoal from './pages/DashboardGoal';
+import Review from './components/pageComponents/contactPage/review';
+import ComingSoon from './components/ComingSoon';
 
 const Main = () => {
 
@@ -32,12 +35,13 @@ const Main = () => {
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/tools" element={<Tools />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/review" element={<Review />} />
+          <Route path="/login" element={<ComingSoon />} />
+          <Route path="/register" element={<ComingSoon />} />
           <Route path="/details" element={<Details />} />
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <Layout />
+              <ComingSoon />
             </ProtectedRoute>
           }>
             <Route index element={<Dashboard />} />
@@ -45,7 +49,7 @@ const Main = () => {
             <Route path="investments" element={<Investments/>}/>
             <Route path="documents" element={<DashboardDocuments />} />
             <Route path="health" element={<DashboardHealth />} />
-            <Route path="goal" element={<ProfileDashboard />} />
+            <Route path="goal" element={<DashboardGoal />} />
             <Route path="tools" element={<PremiumToolsList />} />
             <Route path="budget" element={<ProfileDashboard />} />
             <Route path="couple" element={<ProfileDashboard />} />
