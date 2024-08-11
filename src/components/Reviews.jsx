@@ -66,7 +66,7 @@ const Reviews = () => {
         <Slider {...settings}>
           {reviews.length > 0 ? (
             reviews.map((review) => (
-              <div key={review._id} className="p-6 bg-white shadow-lg rounded-lg text-center transition-transform transform hover:scale-105">
+              <div key={review._id} className="p-6 bg-white shadow-lg rounded-lg text-center transition-transform transform hover:scale-105 h-[400px]">
                 {review.image && review.image.data ? (
                   <img
                     className="w-32 h-32 mx-auto rounded-full object-cover mb-6 border-4 border-gray-200"

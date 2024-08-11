@@ -6,7 +6,7 @@ import Services from './pages/Services';
 import Tools from './pages/Tools';
 import Contact from './pages/Contact';
 import Blogs from './pages/Blogs';
-// import Login from './pages/Login';
+import Login from './pages/Login';
 // import Register from './pages/Register';
 import Details from './pages/Details';
 import Dashboard from './pages/Dashboard';
@@ -39,6 +39,7 @@ const Main = () => {
           <Route path="/login" element={<ComingSoon />} />
           <Route path="/register" element={<ComingSoon />} />
           <Route path="/details" element={<Details />} />
+          <Route path="/admin/login" element={<Login />} />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <ComingSoon />

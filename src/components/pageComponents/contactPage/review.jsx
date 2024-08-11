@@ -4,15 +4,14 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 
 const host = process.env.REACT_APP_HOST;
-// http://localhost:3001
-// https://yark-backend.onrender.com
 
 const Review = () => {
   const [rating, setRating] = useState(0);
   const [image, setImage] = useState(null);
   const [editorOpen, setEditorOpen] = useState(false);
+  const [isImageSaved, setIsImageSaved] = useState(false); // Track if image is saved
   const editorRef = useRef(null);
-  // Update your handleSubmit function to use logFormData
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -20,15 +19,18 @@ const Review = () => {
       toast.error('Please select a rating.');
       return;
     }
-  
+
+    if (!image || !isImageSaved) {
+      toast.error('Please save the image before submitting.');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('name', e.target.name.value);
     formData.append('rating', rating);
     formData.append('description', e.target.description.value);
-    if (image) {
-      formData.append('image', image); // Assuming `image` is a File object
-    }
-  
+    formData.append('image', image); // Assuming `image` is a File object or Data URL
+
     try {
       await axios.post(`${host}/api/v1/review`, formData, {
         headers: {
@@ -39,11 +41,14 @@ const Review = () => {
       e.target.reset();
       setRating(0);
       setImage(null);
+      setEditorOpen(false);
+      setIsImageSaved(false);
     } catch (err) {
       console.error(err);
       toast.error('Failed to submit review');
     }
   };
+
   const handleRating = (rate) => {
     setRating(rate);
   };
@@ -53,14 +58,16 @@ const Review = () => {
     if (file) {
       setImage(file);
       setEditorOpen(true);
+      setIsImageSaved(false); // Reset the save status when a new image is uploaded
     }
   };
 
   const handleCrop = () => {
     if (editorRef.current) {
       const canvas = editorRef.current.getImage();
-      setImage(canvas.toDataURL());
+      setImage(canvas.toDataURL()); // Save the cropped image as Data URL
       setEditorOpen(false);
+      setIsImageSaved(true); // Mark the image as saved
     }
   };
 
@@ -143,7 +150,7 @@ const Review = () => {
                 onClick={handleCrop}
                 className="mt-4 bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium py-2 text-black"
               >
-                Crop & Save
+                Edit & Save
               </button>
             </div>
           )}

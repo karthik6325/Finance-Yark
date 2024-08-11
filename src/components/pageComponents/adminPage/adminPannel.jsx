@@ -163,8 +163,8 @@ const AdminPanel = () => {
   );
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full h-[90vh] m-10 p-4 bg-white shadow-lg rounded-lg">
+    <div className="h-[2000px] flex items-center justify-center bg-gray-100">
+      <div className="w-full h-[1900px] m-10 p-4 bg-white shadow-lg rounded-lg">
         {/* User Management Section */}
         <div>
           <BoxWrapper>
@@ -297,7 +297,7 @@ const AdminPanel = () => {
               <th className="py-2 px-4 border-b text-left">Image</th>
               <th className="py-2 px-4 border-b text-left">Name</th>
               <th className="py-2 px-4 border-b text-left">Rating</th>
-              <th className="py-2 px-4 border-b text-left">Description</th>
+              <th className="py-2 px-4 border-b text-left w-[110px]">Description</th>
               <th className="py-2 px-4 border-b text-left">Actions</th>
             </tr>
           </thead>
@@ -319,18 +319,18 @@ const AdminPanel = () => {
                   <td className="py-2 px-4 border-b">{review.name}</td>
                   <td className="py-2 px-4 border-b">{review.rating}</td>
                   <td className="py-2 px-4 border-b">{review.description}</td>
-                  <td className="py-2 px-4 border-b flex space-x-2">
+                  <td className="py-2 px-4 border-b">
                     <button
                       onClick={() => handleReviewAction(review._id, 'accept')}
                       className="text-green-500 hover:text-green-700"
                     >
-                      <IoThumbsUp />
+                      <IoThumbsUp className="w-10 h-10"/>
                     </button>
                     <button
                       onClick={() => handleReviewAction(review._id, 'reject')}
-                      className="ml-4 text-red-500 hover:text-red-700"
+                      className="pl-10 text-red-500 hover:text-red-700"
                     >
-                      <IoThumbsDown />
+                      <IoThumbsDown className="w-10 h-10"/>
                     </button>
                   </td>
                 </tr>
