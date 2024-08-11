@@ -7,19 +7,19 @@ import Tools from './pages/Tools';
 import Contact from './pages/Contact';
 import Blogs from './pages/Blogs';
 import Login from './pages/Login';
-// import Register from './pages/Register';
+import Register from './pages/Register';
 import Details from './pages/Details';
-import Dashboard from './pages/Dashboard';
-// import Layout from './components/Layout';
+// import Dashboard from './pages/Dashboard';
+import Layout from './components/Layout';
 import ProfileDashboard from './pages/DashboardProfile';
 import ProtectedRoute from './components/ProtectedRoute'; 
 import Investments from './components/pageComponents/dashboardPage/InvestmentsPage';
 import Admin from './pages/Admin';
 import AdminRoute from './components/AdminRoute';
-import DashboardDocuments from './pages/DashboardDocuments';
-import PremiumToolsList from './components/pageComponents/premiumCalculators/premiumCalculators';
-import DashboardHealth from './pages/DashboardHealthPage';
-import DashboardGoal from './pages/DashboardGoal';
+// import DashboardDocuments from './pages/DashboardDocuments';
+// import PremiumToolsList from './components/pageComponents/premiumCalculators/premiumCalculators';
+// import DashboardHealth from './pages/DashboardHealthPage';
+// import DashboardGoal from './pages/DashboardGoal';
 import Review from './components/pageComponents/contactPage/review';
 import ComingSoon from './components/ComingSoon';
 
@@ -36,25 +36,24 @@ const Main = () => {
           <Route path="/tools" element={<Tools />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/review" element={<Review />} />
-          <Route path="/login" element={<ComingSoon />} />
-          <Route path="/register" element={<ComingSoon />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/details" element={<Details />} />
-          <Route path="/admin/login" element={<Login />} />
           <Route path="/dashboard" element={
             <ProtectedRoute>
-              <ComingSoon />
+              <Layout />
             </ProtectedRoute>
           }>
-            <Route index element={<Dashboard />} />
+            <Route index element={<ProfileDashboard />} />
             <Route path="profile" element={<ProfileDashboard />} />
             <Route path="investments" element={<Investments/>}/>
-            <Route path="documents" element={<DashboardDocuments />} />
-            <Route path="health" element={<DashboardHealth />} />
-            <Route path="goal" element={<DashboardGoal />} />
-            <Route path="tools" element={<PremiumToolsList />} />
-            <Route path="budget" element={<ProfileDashboard />} />
-            <Route path="couple" element={<ProfileDashboard />} />
-            <Route path="learn" element={<ProfileDashboard />} />
+            <Route path="documents" element={<ComingSoon />} />
+            <Route path="health" element={<ComingSoon />} />
+            <Route path="goal" element={<ComingSoon />} />
+            <Route path="tools" element={<ComingSoon />} />
+            <Route path="budget" element={<ComingSoon />} />
+            <Route path="couple" element={<ComingSoon />} />
+            <Route path="learn" element={<ComingSoon />} />
           </Route>
           <Route path="/admin" element={
             <AdminRoute>
