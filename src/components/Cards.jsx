@@ -13,9 +13,6 @@ const Cards = () => {
           <div className='text-center flex-grow'>
             <p className='py-2 mx-8 mt-8'>Choose the ideal financial planning service perfectly adapted to your unique individual needs. From basic planning services to tailor-made comprehensive financial planning expertly reflecting your specific financial goals.</p>
           </div>
-          <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium mx-auto px-6 py-3 text-black absolute text-black before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
-          <span relative="relative z-10">Try Now!</span>
-        </button>
         </div>
         <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300 relative h-[550px]'>
           <img className='mx-auto mt-[-3rem] bg-white h-[200px] object-contain' src={Performance} alt="Performance Overview" />
@@ -23,9 +20,6 @@ const Cards = () => {
           <div className='text-center flex-grow'>
             <p className='py-2 mx-8 mt-8'>Take control of your finances with our intuitive tools. No technical knowledge or complex computer language required. Our user-friendly interface empowers you to manage your finances effectively.</p>
           </div>
-          <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium mx-auto px-6 py-3 text-black absolute before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
-          <span relative="relative z-10">Try Now!</span>
-        </button>
         </div>
         <div className='w-full shadow-xl flex flex-col p-4 my-4 rounded-lg hover:scale-105 duration-300 relative h-[550px]'>
           <img className='mx-auto mt-[-3rem] bg-white h-[200px] object-contain' src={Projection} alt="Projection Analysis" />
@@ -33,9 +27,9 @@ const Cards = () => {
           <div className='text-center flex-grow'>
             <p className='py-2 mx-8 mt-8'>Stay on top of your finances with our comprehensive reporting and analysis tools. Our user-friendly interface makes it easy to understand your financial situation and make informed decisions.</p>
           </div>
-          <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium mx-auto px-6 py-3 text-black absolute before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
+          {/* <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium mx-auto px-6 py-3 text-black absolute before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
           <span relative="relative z-10">Try Now!</span>
-        </button>
+        </button> */}
         </div>
       </div>
     </div>

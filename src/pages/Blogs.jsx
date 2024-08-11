@@ -1,19 +1,13 @@
 import React from 'react';
-import Analytics from '../components/Analytics';
-import Cards from '../components/Cards';
 import Footer from '../components/Footer';
-import Hero from '../components/Hero';
-import Planning from '../components/Planning';
 import Navbar from '../components/Navbar';
+import BlogList from '../components/pageComponents/blogPage/blogList';
 
 function Blogs() {
   return (
     <div>
       <Navbar/>
-      <Hero />
-      <Analytics />
-      <Planning />
-      <Cards />
+      <BlogList />
       <Footer />
     </div>
   );

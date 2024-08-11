@@ -1,9 +1,14 @@
 import React from 'react';
 import BackgroundImage from '../assets/undraw_Finance_re_gnv2.png'; 
 import Typed from 'react-typed';
+import { useNavigate } from 'react-router-dom';
 
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/services');
+  }
   return (
     <div className='relative text-white'>
       <div className='absolute inset-0 bg-black opacity-20' style={{ backgroundImage: `url(${BackgroundImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
@@ -24,7 +29,7 @@ const Hero = () => {
             Every smart investor deserves to work with smart tools.
           </p>
         </div>
-        <button className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium my-6 mx-auto py-3 text-black before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 text-black shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
+        <button onClick={handleClick} className="bg-[#E9D06C] w-[200px] border-[#E9D06C] rounded-md font-medium my-6 mx-auto py-3 text-black before:ease relative h-12 w-40 overflow-hidden border bg-[#E9D06C]-500 text-black shadow-4xl transition-all before:absolute before:right-0 before:top-0 before:h-12 before:w-6 before:translate-x-12 before:rotate-6 before:bg-white before:opacity-60 before:duration-700 hover:shadow-[#E9D06C]-500 hover:before:-translate-x-40">
           <span relative="relative z-10 text-black">Get Started</span>
         </button>
       </div>
