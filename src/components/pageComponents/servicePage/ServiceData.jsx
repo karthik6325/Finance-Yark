@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom'; 
 import ServiceData from './ServiceCard';
-import { FaHandHoldingUsd, FaPiggyBank, FaShieldAlt, FaHeartbeat, FaCarAlt, FaUserTie, FaBuilding, FaFileContract, FaLock, FaCreditCard, FaChartLine, FaShip, FaMoneyCheckAlt } from "react-icons/fa";
+import { FaHandHoldingUsd, FaPiggyBank, FaShieldAlt, FaHeartbeat, FaCarAlt, FaUserTie, FaBuilding, FaFileContract, FaLock, FaCreditCard } from "react-icons/fa";
 
 const ServiceCard = () => {
   return (
@@ -11,47 +11,35 @@ const ServiceCard = () => {
                 <h2 className="font-heading font-bold p-20 text-3xl leading-[1.1] sm:text-3xl md:text-6xl">Services</h2>
             </div>
             <div className="mx-auto grid justify-center gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-                <Link to="/contact">
-                    <ServiceData title="Portfolio Management" Icon={FaHandHoldingUsd}/>
+                <Link to="/services/portfolio-management">
+                <ServiceData title="Portfolio Management" Icon={FaHandHoldingUsd} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Mutual Funds" Icon={FaPiggyBank}/>
+                <Link to="/services/mutual-funds">
+                    <ServiceData title="Mutual Funds" Icon={FaPiggyBank} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Life Insurance" Icon={FaShieldAlt}/>
+                <Link to="/services/life-insurance">
+                    <ServiceData title="Life Insurance" Icon={FaShieldAlt} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Health Insurance" Icon={FaHeartbeat}/>
+                <Link to="/services/health-insurance">
+                    <ServiceData title="Health Insurance" Icon={FaHeartbeat} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Motor Insurance" Icon={FaCarAlt}/>
+                <Link to="/services/motor-insurance">
+                    <ServiceData title="Motor Insurance" Icon={FaCarAlt} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Personal Loans" Icon={FaUserTie}/>
+                <Link to="/services/personal-loans">
+                    <ServiceData title="Personal Loans" Icon={FaUserTie} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Business Loans" Icon={FaBuilding}/>
+                <Link to="/services/business-loans">
+                    <ServiceData title="Business Loans" Icon={FaBuilding} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Bond Investments" Icon={FaFileContract}/>
+                <Link to="/services/bond-investments">
+                    <ServiceData title="Bond Investments" Icon={FaFileContract} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Fixed Deposits" Icon={FaLock}/>
+                <Link to="/services/fixed-deposits">
+                    <ServiceData title="Fixed Deposits" Icon={FaLock} />
                 </Link>
-                <Link to="/contact">
-                    <ServiceData title="Credit Cards" Icon={FaCreditCard}/>
-                </Link>
-                <Link to="/contact">
-                    <ServiceData title="ETF's" Icon={FaChartLine}/>
-                </Link>
-                <Link to="/contact">
-                    <ServiceData title="Fire Insurance" Icon={FaShieldAlt}/>
-                </Link>
-                <Link to="/contact">
-                    <ServiceData title="Marine Insurance" Icon={FaShip}/>
-                </Link>
-                <Link to="/contact">
-                    <ServiceData title="Loan against Mutual Funds" Icon={FaMoneyCheckAlt}/>
+                <Link to="/services/credit-cards">
+                    <ServiceData title="Credit Cards" Icon={FaCreditCard} />
                 </Link>
             </div>
         </section>

@@ -1,15 +1,21 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   FaFacebookSquare,
   FaInstagram,
   FaTwitterSquare,
 } from 'react-icons/fa';
+import logo from '../assets/logo.png';
 
 const Footer = () => {
   return (
     <div className='max-w-[1240px] mx-auto py-16 px-4 grid lg:grid-cols-3 gap-8 text-gray-300'>
       <div>
-        <h1 className='w-full text-3xl font-bold text-[#E9D06C]'>Yark</h1>
+        <div className="flex items-center ml-8">
+          <Link to="/">
+          <img src={logo} alt="Yark Logo" className="h-28 w-auto cursor-pointer" />
+          </Link>
+        </div>
         <p className='py-4'>Expert financial planning for a secure future.</p>
         <div className='flex justify-between md:w-[75%] my-6'>
           <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">

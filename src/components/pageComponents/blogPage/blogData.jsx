@@ -1,16 +1,6 @@
 // blogsData.js
 const blogs = [
     {
-      id: 1,
-      title: "Do you know couples collaborating 👩‍❤️‍👨 on their financial planning 💸 - increases their intimate relationship ?? 💕 ",
-      content: "The answer to the question is here..A special thank you to my wife Keerthika V for inspiring me to write my feature book FINANCIAL INTIMACY : A COUPLES DIARY ...",
-      fullContent: `The answer to the question is here..A special thank you to my wife Keerthika V for inspiring me to write my feature book FINANCIAL INTIMACY : A COUPLES DIARY -  A short story into a nicely formatted booklet. 
-I'm hoping to get started on writing my feature book shortly because of you my wify. Read book at `,
-      image: "https://media.licdn.com/dms/image/D561FAQHsLNLFDkYZvA/feedshare-document-images_1280/1/1714808305813?e=1724284800&v=beta&t=lRqH233e6MlW8cu1HYtFfLAfJI-NYy186356H52793E",
-      author: "Raja Rathinam SK",
-      date: "August 1, 2024"
-    },
-    {
       id: 2,
       title: "Education Inflation - a couples primary battle !!",
       content: "I am the first in my family to earn an MBA, a dream my father had for me (a middle class big dream). I dedicated two sincere years to my MBA, guided by a group of exceptional professors who mentored me throughout....",

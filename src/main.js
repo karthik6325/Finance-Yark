@@ -22,6 +22,7 @@ import AdminRoute from './components/AdminRoute';
 // import DashboardGoal from './pages/DashboardGoal';
 import Review from './components/pageComponents/contactPage/review';
 import ComingSoon from './components/ComingSoon';
+import ServiceDetails from './pages/ServiceDetails';
 
 const Main = () => {
 
@@ -39,6 +40,7 @@ const Main = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/details" element={<Details />} />
+          <Route path="/services/:service" element={<ServiceDetails />} />
           <Route path="/dashboard" element={
             <ProtectedRoute>
               <Layout />

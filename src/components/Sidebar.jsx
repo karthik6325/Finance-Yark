@@ -6,6 +6,7 @@ import { DASHBOARD_SIDEBAR_LINKS } from './lib/constants/index';
 import { useLogin } from '../context/loginContext'; // Import useLogin
 import { useNavigate } from 'react-router-dom';
 import { RxChatBubble } from "react-icons/rx";
+import logo from '../assets/logo.png';
 
 const linkClass =
 	'flex items-center gap-2 font-light px-3 py-2 hover:bg-neutral-700 hover:no-underline active:bg-neutral-600 rounded-sm text-base text-white';
@@ -26,7 +27,11 @@ export default function Sidebar() {
 	return (
 		<div className="bg-neutral-900 w-60 p-3 flex flex-col text-white">
 			<div onClick={handleChange} className='cursor-pointer'>
-  				<h1 className='text-3xl font-bold text-[#E9D06C] ml-6'>Yark</h1>
+			<div className="flex items-center ml-8">
+				<Link to="/">
+				<img src={logo} alt="Yark Logo" className="h-28 w-auto cursor-pointer" />
+				</Link>
+			</div>
 			</div>
 			<div className="py-8 flex flex-1 flex-col gap-0.5">
 				{DASHBOARD_SIDEBAR_LINKS.map((link) => (

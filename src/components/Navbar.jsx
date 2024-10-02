@@ -5,6 +5,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { useLogin } from '../context/loginContext';
 import { HiUserCircle } from 'react-icons/hi';
 import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -35,9 +36,13 @@ const Navbar = () => {
   };
 
   return (
-    <div className='flex justify-between items-center h-24 px-4 text-white w-full bg-white bg-opacity-20 '>
+    <div className='flex justify-between items-center h-36 px-4 text-white w-full bg-white bg-opacity-20'>
       <div className='flex items-center'>
-        <h1 className='text-3xl font-bold text-[#E9D06C] ml-6'>Yark</h1>
+      <div className="flex items-center ml-8">
+        <Link to="/">
+          <img src={logo} alt="Yark Logo" className="h-28 w-auto cursor-pointer" />
+        </Link>
+      </div>
         <ul className='hidden md:flex ml-40'>
           <li className='p-4 font-bold'>
             <Link to="/">Home</Link>
@@ -129,11 +134,15 @@ const Navbar = () => {
           </>
         )}
       </div>
-      <div onClick={handleNav} className='block md:hidden mr-6'>
+      <div onClick={handleNav} className='block md:hidden mr-6 z-40'>
         {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
       </div>
-      <ul className={nav ? 'fixed left-0 top-0 w-[60%] h-full border-r border-r-grey-900 bg-black ease-in-out duration-500 z-20' : 'ease-in-out duration-500 fixed left-[-100%]'}>
-        <h1 className='w-full text-3xl font-bold text-[#E9D06C] m-4'>Yark</h1>
+      <ul className={nav ? 'fixed left-0 top-0 w-[60%] h-full border-r border-r-grey-900 bg-black ease-in-out duration-500 z-40' : 'ease-in-out duration-500 fixed left-[-100%] z-20'}>
+        <div className="flex items-center ml-8">
+          <Link to="/">
+            <img src={logo} alt="Yark Logo" className="h-28 w-auto cursor-pointer" />
+          </Link>
+        </div>
         <li className='p-4 border-b border-gray-600 font-bold'>
           <Link to="/" onClick={handleNav}>Home</Link>
         </li>
