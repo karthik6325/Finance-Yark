@@ -1,73 +1,129 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Services from './pages/Services';
-import Tools from './pages/Tools';
-import Contact from './pages/Contact';
-import Blogs from './pages/Blogs';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import Details from './pages/Details';
-// import Dashboard from './pages/Dashboard';
-import Layout from './components/Layout';
-import ProfileDashboard from './pages/DashboardProfile';
-import ProtectedRoute from './components/ProtectedRoute'; 
-import Investments from './components/pageComponents/dashboardPage/InvestmentsPage';
-import Admin from './pages/Admin';
-import AdminRoute from './components/AdminRoute';
-// import DashboardDocuments from './pages/DashboardDocuments';
-// import PremiumToolsList from './components/pageComponents/premiumCalculators/premiumCalculators';
-// import DashboardHealth from './pages/DashboardHealthPage';
-// import DashboardGoal from './pages/DashboardGoal';
-import Review from './components/pageComponents/contactPage/review';
-import ComingSoon from './components/ComingSoon';
-import ServiceDetails from './pages/ServiceDetails';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
+import SpaceBackground from './components/SpaceBackground';
+import Navbar from './components/Navbar';
+import { JoinClubModal, MembersLoginModal } from './components/Modals';
+import GatewayView from './views/GatewayView';
+import HomeView from './views/HomeView';
+import AboutUsView from './views/AboutUsView';
+import AboutFounderView from './views/AboutFounderView';
+import ServicesView from './views/ServicesView';
+import PartnerView from './views/PartnerView';
+import AcademyView from './views/AcademyView';
 
-const Main = () => {
+// Inner component to use react-router hooks
+const MainApp = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const [joinClubOpen, setJoinClubOpen] = useState(false);
+  const [loginOpen, setLoginOpen] = useState(false);
+
+  // Determine active tab from URL path
+  const getActiveTab = () => {
+    const path = location.pathname.toLowerCase();
+    if (path.includes('about')) return 'about';
+    if (path.includes('founder')) return 'founder';
+    if (path.includes('services')) return 'services';
+    if (path.includes('partner')) return 'partner';
+    if (path === '/wealth') return 'home';
+    return '';
+  };
+
+  const activeTab = getActiveTab();
+  const isWealthSection = ['/wealth', '/about', '/founder', '/services', '/partner', '/wealth/about', '/wealth/founder', '/wealth/services', '/wealth/partner'].includes(location.pathname.toLowerCase());
+
+  const handleSelectTab = (tabId) => {
+    if (tabId === 'home') navigate('/wealth');
+    else if (tabId === 'about') navigate('/about');
+    else if (tabId === 'founder') navigate('/founder');
+    else if (tabId === 'services') navigate('/services');
+    else if (tabId === 'partner') navigate('/partner');
+  };
 
   return (
-    <div>
-      <Router>
+    <div className="relative min-h-screen bg-[#040d14] text-slate-100 flex flex-col font-sans selection:bg-[#009d5a]/40 selection:text-white">
+      {/* Global Animated Space & Starry Background */}
+      <SpaceBackground />
+
+      {/* Navigation Bar (Shown on Wealth pages) */}
+      {isWealthSection && (
+        <Navbar
+          activeTab={activeTab}
+          onSelectTab={handleSelectTab}
+          onOpenJoinClub={() => setJoinClubOpen(true)}
+          onOpenLogin={() => setLoginOpen(true)}
+          onReturnToGateway={() => navigate('/')}
+        />
+      )}
+
+      {/* Main Content Area */}
+      <main className="flex-1 w-full z-10">
         <Routes>
-          <Route path="/" index element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/tools" element={<Tools />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/review" element={<Review />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/details" element={<Details />} />
-          <Route path="/services/:service" element={<ServiceDetails />} />
-          <Route path="/dashboard" element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }>
-            <Route index element={<ProfileDashboard />} />
-            <Route path="profile" element={<ProfileDashboard />} />
-            <Route path="investments" element={<Investments/>}/>
-            <Route path="documents" element={<ComingSoon />} />
-            <Route path="health" element={<ComingSoon />} />
-            <Route path="goal" element={<ComingSoon />} />
-            <Route path="tools" element={<ComingSoon />} />
-            <Route path="budget" element={<ComingSoon />} />
-            <Route path="couple" element={<ComingSoon />} />
-            <Route path="learn" element={<ComingSoon />} />
-          </Route>
-          <Route path="/admin" element={
-            <AdminRoute>
-              <Admin />
-            </AdminRoute>
-          }>
-            <Route index element={<Admin />} />
-            <Route path="edit" element={<ProfileDashboard />} />
-          </Route>
+          {/* Main Landing Gateway */}
+          <Route 
+            path="/" 
+            element={
+              <GatewayView
+                onEnterManagement={() => navigate('/wealth')}
+                onEnterAcademy={() => navigate('/academy')}
+              />
+            } 
+          />
+
+          {/* Wealth Management Section */}
+          <Route path="/wealth" element={<HomeView onNavigate={handleSelectTab} />} />
+          <Route path="/about" element={<AboutUsView />} />
+          <Route path="/wealth/about" element={<AboutUsView />} />
+          <Route path="/founder" element={<AboutFounderView />} />
+          <Route path="/wealth/founder" element={<AboutFounderView />} />
+          <Route path="/services" element={<ServicesView />} />
+          <Route path="/wealth/services" element={<ServicesView />} />
+          <Route path="/partner" element={<PartnerView />} />
+          <Route path="/wealth/partner" element={<PartnerView />} />
+
+          {/* Academy Section */}
+          <Route 
+            path="/academy" 
+            element={
+              <AcademyView 
+                onReturnToGateway={() => navigate('/')}
+                onSwitchToWealth={() => navigate('/wealth')}
+              />
+            } 
+          />
+
+          {/* Fallback */}
+          <Route 
+            path="*" 
+            element={
+              <GatewayView
+                onEnterManagement={() => navigate('/wealth')}
+                onEnterAcademy={() => navigate('/academy')}
+              />
+            } 
+          />
         </Routes>
-      </Router>
+      </main>
+
+      {/* Global Modals */}
+      <JoinClubModal 
+        isOpen={joinClubOpen} 
+        onClose={() => setJoinClubOpen(false)} 
+      />
+      <MembersLoginModal 
+        isOpen={loginOpen} 
+        onClose={() => setLoginOpen(false)} 
+      />
     </div>
+  );
+};
+
+const Main = () => {
+  return (
+    <Router>
+      <MainApp />
+    </Router>
   );
 };
 
